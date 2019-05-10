@@ -1,4 +1,4 @@
-package nettyMsgTest;
+package com.netty.core;
 
 import org.msgpack.annotation.Message;
 

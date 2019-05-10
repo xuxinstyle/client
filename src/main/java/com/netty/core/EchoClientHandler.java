@@ -1,9 +1,9 @@
-package nettyMsgTest;
+package com.netty.core;
 
-import io.netty.channel.ChannelHandler;
+import com.game.connect.packet.CM_Connect;
+import com.game.login.packet.CM_Login;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.concurrent.EventExecutorGroup;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -28,13 +28,31 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
          * 注意：因为使用LengthFieldPrepender、LengthFieldBasedFrameDecoder编解码器处理半包消息
          * 所以这里连续发送也不会出现 TCP 粘包/拆包
          */
+/*
+        CM_Connect cm = new CM_Connect();
+        cm.setContext("欢迎来到游戏世界，是否需要创建新角色？（Y/N）");
+*/
+        MyPack myPack = new MyPack();
+        myPack.setpId(1);
+        CM_Login cm = new CM_Login();
+        cm.setCode(10086);
+        myPack.setCm(cm);
+        myPack.setTime(System.nanoTime());
+        ctx.writeAndFlush(myPack);
         //CM_Test1 cm =getMessage();
+       /* List<MyPack> myPacks = getUserArrayDatapack();
+        for (MyPack myPack : myPacks) {
+            System.out.println("发送第一个包"+myPack);
+            ctx.writeAndFlush(myPack);
+        }
         List<User> users = getUserArrayData();
         for (User user : users) {
+            System.out.println("发送第一个包"+user);
             ctx.writeAndFlush(user);
-        }
+        }*/
+
         /*ctx.writeAndFlush(cm);*/
-        ctx.writeAndFlush("与客户端连接成功" + Thread.currentThread().getName());
+        //ctx.writeAndFlush("与客户端连接成功" + Thread.currentThread().getName());
     }
 
     /**
@@ -43,7 +61,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //服务端消息传来的地方，在这个地方处理服务端传来的消息，并处理相关逻辑
-        System.out.println((atomicInteger.addAndGet(1)) + "---" + Thread.currentThread().getName() + ",Server return Message：" + msg);
+        //System.out.println((atomicInteger.addAndGet(1)) + "---" + Thread.currentThread().getName() + ",Server return Message：" + msg);
     }
 
     /**
@@ -80,5 +98,17 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
             users[i] = loopUser;
         }
         return Arrays.asList(users);
+    }
+    public List<MyPack> getUserArrayDatapack() {
+        MyPack[] myPacks = new MyPack[2];
+        MyPack loopMyPack = null;
+        for (int i = 0; i < 2; i++) {
+            loopMyPack = new MyPack();
+            loopMyPack.setpId(i + 1);
+            loopMyPack.setCm(null);//getMessage()
+            loopMyPack.setTime(System.nanoTime());
+            myPacks[i] = loopMyPack;
+        }
+        return Arrays.asList(myPacks);
     }
 }

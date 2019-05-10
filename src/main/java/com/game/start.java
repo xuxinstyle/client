@@ -1,5 +1,8 @@
-package nettyMsgTest;
+package com.game;
 
+import com.netty.core.EchoClientHandler;
+import com.netty.core.MsgpackDecoder;
+import com.netty.core.MsgpackEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,10 +14,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 
-import nettyMsgTest.messagepack.MsgpackDecoder;
-import nettyMsgTest.messagepack.MsgpackEncoder;
-
-public class EchoClient {
+public class start {
     /**
      * 使用 2 个线程模拟 2 个客户端
      *
@@ -58,9 +58,9 @@ public class EchoClient {
                                  * 关于 长度域编解码器处理半包消息，本文不做详细讲解，会有专门篇章进行说明
                                  */
                                 ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
-                                ch.pipeline().addLast("CMessagePack encoder", new MsgpackEncoder());
+                                ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
                                 ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
-                                ch.pipeline().addLast("CMessagePack Decoder", new MsgpackDecoder());
+                                ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                                 ch.pipeline().addLast(new EchoClientHandler());
                             }
                         });

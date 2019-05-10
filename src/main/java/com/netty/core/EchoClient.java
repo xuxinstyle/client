@@ -1,4 +1,4 @@
-package nettyMsgTest;
+package com.netty.core;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,9 +10,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-
-import nettyMsgTest.messagepack.MsgpackDecoder;
-import nettyMsgTest.messagepack.MsgpackEncoder;
 
 public class EchoClient {
     /**

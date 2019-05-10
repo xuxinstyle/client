@@ -1,4 +1,4 @@
-package nettyMsgTest;
+package game;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,11 +10,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
+import netty.core.EchoClientHandler;
+import netty.core.MsgpackDecoder;
+import netty.core.MsgpackEncoder;
 
-import nettyMsgTest.messagepack.MsgpackDecoder;
-import nettyMsgTest.messagepack.MsgpackEncoder;
-
-public class EchoClient {
+public class start {
     /**
      * 使用 2 个线程模拟 2 个客户端
      *
@@ -25,6 +25,9 @@ public class EchoClient {
             new Thread(new MyThread()).start();
         }*/
         new Thread(new MyThread()).start();
+        while(true){
+
+        }
     }
 
     static class MyThread implements Runnable {
