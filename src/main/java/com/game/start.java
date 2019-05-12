@@ -1,8 +1,9 @@
 package com.game;
 
-import com.netty.core.EchoClientHandler;
-import com.netty.core.MsgpackDecoder;
-import com.netty.core.MsgpackEncoder;
+import com.socket.core.EchoClientHandler;
+import com.socket.core.MsgpackDecoder;
+import com.socket.core.MsgpackEncoder;
+import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -31,6 +32,7 @@ public class start {
 
         @Override
         public void run() {
+            new RegistSerializerMessage().init();
             connect("127.0.0.1", 8888);
         }
 

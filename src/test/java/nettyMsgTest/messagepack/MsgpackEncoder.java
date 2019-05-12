@@ -11,7 +11,7 @@ import org.msgpack.MessagePack;
 public class MsgpackEncoder extends MessageToByteEncoder<Object> {
 
     /**
-     * 重写方法，负责将 Object 类型的 POJO 对象编码为 byte 数组，然后写入 ByteBuf 中
+     * 重写方法，负责将 CM_Connect 类型的 POJO 对象编码为 byte 数组，然后写入 ByteBuf 中
      * @param channelHandlerContext
      * @param o
      * @param byteBuf

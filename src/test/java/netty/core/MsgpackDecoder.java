@@ -13,7 +13,7 @@ import java.util.List;
 public class MsgpackDecoder extends ReplayingDecoder {
     /**
      * 重写方法，首先从数据报 byteBuf 中获取需要解码的 byte 数组，
-     * 然后调用 CMessagePack 的 read 方法将其反序列化为 Object 对象，将解码后的对象加入到解码列表 list 中，
+     * 然后调用 CMessagePack 的 read 方法将其反序列化为 CM_Connect 对象，将解码后的对象加入到解码列表 list 中，
      * 这样就完成了 CMessagePack 的解码操作
      *
      * @param channelHandlerContext

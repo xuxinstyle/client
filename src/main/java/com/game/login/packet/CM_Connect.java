@@ -1,24 +1,17 @@
-package com.netty.core;
+package com.game.login.packet;
 
 import org.msgpack.annotation.Message;
 
+//登录协议
 @Message
-public class CM_Test1 {
+public class CM_Connect {
     private int code;
-    private String str;
+
     public int getCode() {
         return code;
     }
 
     public void setCode(int code) {
         this.code = code;
-    }
-
-    public String getStr() {
-        return str;
-    }
-
-    public void setStr(String str) {
-        this.str = str;
     }
 }

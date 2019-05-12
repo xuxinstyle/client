@@ -1,17 +1,13 @@
-package com.netty.core;
+package com.socket.core;
 
-import com.game.login.packet.CM_Login;
 import org.msgpack.annotation.Message;
-
-import java.util.Date;
-import java.util.List;
 
 @Message
 public class MyPack {
     //协议Id
     private Integer pId;
     //自己的协议包
-    private CM_Login cm;
+    private byte[] packet;
     //发送时间
     private long time;
 
@@ -23,12 +19,12 @@ public class MyPack {
         this.pId = pId;
     }
 
-    public CM_Login getCm() {
-        return cm;
+    public byte[] getPacket() {
+        return packet;
     }
 
-    public void setCm(CM_Login cm) {
-        this.cm = cm;
+    public void setPacket(byte[] packet) {
+        this.packet = packet;
     }
 
     public long getTime() {
@@ -43,7 +39,7 @@ public class MyPack {
     public String toString() {
         return "MyPack{" +
                 "pId=" + pId +
-                ", cm=" + cm +
+                ", packet=" + packet +
                 ", time=" + time +
                 '}';
     }

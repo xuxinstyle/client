@@ -1,4 +1,4 @@
-package com.netty.Utils.JsonUtils;
+package com.socket.Utils.JsonUtils;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -138,11 +138,11 @@ public class JsonUtils {
     }
 
     /***
-     * 将对象转换为List<Map<String,Object>>
+     * 将对象转换为List<Map<String,CM_Connect>>
      * @param object
      * @return
      */
-    // 返回非实体类型(Map<String,Object>)的List
+    // 返回非实体类型(Map<String,CM_Connect>)的List
     public static List<Map<String, Object>> toList(Object object)
     {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
