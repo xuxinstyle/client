@@ -1,6 +1,6 @@
 package com.socket.core;
 
-import com.game.login.packet.CM_Connect;
+import com.game.connect.packet.CM_Connect;
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
@@ -10,7 +10,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.apache.log4j.Logger;
 import org.msgpack.MessagePack;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,8 +22,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     /**
      * 因为多线程，所以使用原子操作类来进行计数
      */
-    private static final IdentifyThreadPoolExecutor identifyThreadPoolExecutor = new IdentifyThreadPoolExecutor();
-    private static final ActionDispatcher actionDispatcher = new ActionDispatcher(identifyThreadPoolExecutor);
+    private static final ActionDispatcher actionDispatcher = new ActionDispatcher();
     /**
      * 当客户端和服务端 TCP 链路建立成功之后，Netty 的 NIO 线程会调用 channelActive 方法
      */
@@ -37,19 +35,13 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
          * 注意：因为使用LengthFieldPrepender、LengthFieldBasedFrameDecoder编解码器处理半包消息
          * 所以这里连续发送也不会出现 TCP 粘包/拆包
          */
-        /*
-           CM_Connect cm = new CM_Connect();
-           cm.setContext("欢迎来到游戏世界，是否需要创建新角色？（Y/N）");
-        */
         MyPack myPack = new MyPack();
-        myPack.setpId(1);
+        myPack.setpId(2);
         CM_Connect cm = new CM_Connect();
-        cm.setCode(10086);
         byte[] serializer = ProtoStuffUtil.serializer(cm);
         myPack.setPacket(serializer);
         myPack.setTime(System.nanoTime());
         ctx.writeAndFlush(myPack);
-
     }
 
     /**
@@ -58,12 +50,12 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, java.lang.Object msg) throws Exception {
         //服务端消息传来的地方，在这个地方处理服务端传来的消息，并处理相关逻辑
-        //System.out.println((atomicInteger.addAndGet(1)) + "---" + Thread.currentThread().getName() + ",Server return Message：" + msg);
+
         if(logger.isDebugEnabled()){
             logger.debug((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
+        }else {
+            atomicInteger.addAndGet(1);
         }
-        atomicInteger.addAndGet(1);
-
         List<Object> objects =(List<Object>)msg;
         if(objects.size()<=0){
             logger.error("错了错了，传来的包为空！");

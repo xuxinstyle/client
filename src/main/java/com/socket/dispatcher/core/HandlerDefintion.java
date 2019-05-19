@@ -1,6 +1,5 @@
 package com.socket.dispatcher.core;
 
-import com.socket.core.TSession;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;

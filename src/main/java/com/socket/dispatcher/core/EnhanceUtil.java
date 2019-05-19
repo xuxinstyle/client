@@ -1,6 +1,5 @@
 package com.socket.dispatcher.core;
 
-import com.socket.core.TSession;
 import javassist.*;
 
 import java.lang.reflect.Constructor;

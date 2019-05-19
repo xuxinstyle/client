@@ -4,11 +4,17 @@ import org.msgpack.annotation.Message;
 
 @Message
 public class MyPack {
-    //协议Id
+    /**
+     * 协议Id
+     */
     private Integer pId;
-    //自己的协议包
+    /**
+     * 自己的协议包
+     */
     private byte[] packet;
-    //发送时间
+    /**
+     *  发送时间
+     */
     private long time;
 
     public Integer getpId() {

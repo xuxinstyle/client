@@ -2,15 +2,13 @@ package com.game.connect.packet;
 
 import org.msgpack.annotation.Message;
 
+//连接服务器时客户端发生的协议
 @Message
 public class CM_Connect {
-    //消息Id
-    private final int msgId=1;
-
+    private static final int id = 1;
     private String context;
-
-    public int getMsgId() {
-        return msgId;
+    public static int getId() {
+        return id;
     }
 
     public String getContext() {

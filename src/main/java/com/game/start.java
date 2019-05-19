@@ -14,6 +14,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class start {
     /**
@@ -21,6 +22,7 @@ public class start {
      *
      * @param args
      */
+
     public static void main(String[] args) {
         /*for (int i = 0; i < 2; i++) {
             new Thread(new MyThread()).start();
@@ -33,6 +35,8 @@ public class start {
         @Override
         public void run() {
             new RegistSerializerMessage().init();
+            ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+            applicationContext.start();
             connect("127.0.0.1", 8888);
         }
 

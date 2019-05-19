@@ -1,8 +1,6 @@
 package com.socket.dispatcher.core;
 
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
-import com.socket.dispatcher.executor.IIdentifyThreadPool;
-import com.socket.core.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
@@ -22,17 +20,15 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     private static Logger logger = Logger.getLogger(ActionDispatcher.class);
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
-    //线程池
-    private final IIdentifyThreadPool executor;
 
-    public ActionDispatcher(IIdentifyThreadPool executor) {
-        this.executor = executor;
+    public ActionDispatcher() {
+
     }
 
     @Override
     public void handle(TSession session, int opIndex, Object packet, long decodeTime) {
-        //doHandle(session, opIndex, packet,decodeTime);
-        executor.addSessionTask(session ,new IoHandleEvent(this, session, opIndex, packet, decodeTime));
+        doHandle(session, opIndex, packet,decodeTime);
+
     }
     public void doHandle(TSession session, int opIndex, Object packet, long decodeTime) {
 
@@ -68,7 +64,6 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        //System.out.println("bean:"+bean+beanName);
         Class<?> clz = bean.getClass();
         Method[] methods = clz.getDeclaredMethods();
         for (Method method : methods) {
