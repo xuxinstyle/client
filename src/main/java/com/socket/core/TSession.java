@@ -65,4 +65,8 @@ public class TSession {
             logger.error(msg,e);
         }
     }
+    public void esc(){
+        channel.close();
+    }
+
 }

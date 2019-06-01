@@ -1,5 +1,6 @@
 package com.socket.dispatcher.core;
 
+import com.socket.core.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.apache.log4j.Logger;
@@ -46,7 +47,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         }
         Object res = defintion.invoke(session, opIndex, packet);
         if(res != null){
-            session.sendPacket(opIndex, res);
+            session.sendPacket(res);
         }
 
     }

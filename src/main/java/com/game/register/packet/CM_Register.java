@@ -1,20 +1,18 @@
-package com.game.login.packet;
-
-import org.msgpack.annotation.Message;
+package com.game.register.packet;
 
 /**
- * 登录协议
+ * @Author：xuxin
+ * @Date: 2019/5/29 18:36
  */
-@Message
-public class CM_Login {
+public class CM_Register {
     /**
-     * 用户名
+     * 账号
      */
-    private String username;
+    String username;
     /**
      * 密码
      */
-    private String passward;
+    String passward;
 
     public String getUsername() {
         return username;

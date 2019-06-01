@@ -2,6 +2,7 @@ package com.game.connect.facade;
 
 import com.game.SpringContext;
 import com.game.connect.packet.SM_Connect;
+import com.socket.core.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.springframework.stereotype.Component;
 
@@ -16,4 +17,5 @@ public class ConnectFacade {
     public void connect(TSession session, SM_Connect res){
         SpringContext.getConnectService().welcome(session);
     }
+
 }

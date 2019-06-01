@@ -1,5 +1,7 @@
 package com.socket.dispatcher.action;
 
+import com.socket.core.TSession;
+
 /**
  * @Author：xuxin
  * @Date: 2019/4/29 14:52
