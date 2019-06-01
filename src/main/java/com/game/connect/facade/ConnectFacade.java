@@ -4,6 +4,8 @@ import com.game.SpringContext;
 import com.game.connect.packet.SM_Connect;
 import com.socket.core.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,10 +14,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ConnectFacade {
-
+    private static Logger logger = LoggerFactory.getLogger(ConnectFacade.class);
     @HandlerAnno
     public void connect(TSession session, SM_Connect res){
-        SpringContext.getConnectService().welcome(session);
+        try {
+            SpringContext.getLoginService().welcome(session);
+        }catch (Exception e){
+            logger.error("非法错误："+e.toString());
+        }
+
     }
 
 }

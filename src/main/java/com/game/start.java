@@ -1,14 +1,14 @@
 package com.game;
 
+
 import com.socket.core.EchoClientHandler;
 import com.socket.core.MsgpackDecoder;
 import com.socket.core.MsgpackEncoder;
 import com.socket.dispatcher.config.RegistSerializerMessage;
+import com.socket.heartbeat.HeartBeatTimerHandler;
+import com.socket.heartbeat.IMIdleStateHandler;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -43,6 +43,7 @@ public class start {
         public void connect(String host, int port) {
             /**配置客户端 NIO 线程组/池*/
             EventLoopGroup group = new NioEventLoopGroup();
+
             try {
                 /**Bootstrap 与 ServerBootstrap 都继承(extends)于 AbstractBootstrap
                  * 创建客户端辅助启动类,并对其配置,与服务器稍微不同，这里的 Channel 设置为 NioSocketChannel
@@ -63,6 +64,7 @@ public class start {
                                  * LengthFieldBasedFrameDecoder：长度域解码器——放在MsgpackDecoder解码器前面
                                  * 关于 长度域编解码器处理半包消息，本文不做详细讲解，会有专门篇章进行说明
                                  */
+                                ch.pipeline().addLast(new IMIdleStateHandler());
                                 ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                                 ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
                                 ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));

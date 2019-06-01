@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @Date: 2019/5/29 16:28
  */
 @Component
-public class LoginService implements ILoginService{
+public class LoginServiceImpl implements ILoginService{
     @Override
     public void welcome(TSession session){
         while(true) {
@@ -29,21 +29,35 @@ public class LoginService implements ILoginService{
                 cm.setUsername(username);
                 cm.setPassward(password);
                 session.sendPacket(cm);
+                return;
             } else if (code.trim().toLowerCase().equals("esc")) {
                 System.out.println("是否确认退出游戏？（yes/no）");
                 String status = scanner.next();
                 if (status.trim().toLowerCase().equals("yes")) {
                     session.esc();
+
+                    return;
                 } else if (status.trim().toLowerCase().equals("no")) {
+
                     continue;
+
                 }
             }else if(code.trim().toLowerCase().equals("register")){
                 // 注册
                 SpringContext.getRegisterService().register(session);
             }
-            scanner.close();
-
+            return ;
         }
 
+    }
+
+    @Override
+    public void doLoginAfter(TSession session , int status) {
+        if(status == 1){
+            System.out.println("登录成功！");
+        }else if(status == 0){
+            System.out.println("登录失败，密码错误请重新输入账号密码");
+            welcome(session);
+        }
     }
 }

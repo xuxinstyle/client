@@ -1,5 +1,6 @@
 package com.socket.dispatcher.core;
 
+import com.socket.core.TSession;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
@@ -76,7 +77,7 @@ public class HandlerDefintion implements IHandlerInvoke{
     public INDEXTYPE getIndextype() {
         return indextype;
     }
-
+    @Override
     public String toString(){
         return String.format("[packet : %s][class : %s][method : %s]", clz.getSimpleName(),bean.getClass()
                 .getSimpleName(), method.getName());

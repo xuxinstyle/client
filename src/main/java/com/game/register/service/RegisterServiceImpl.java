@@ -35,6 +35,7 @@ public class RegisterServiceImpl implements RegisterService {
             cm.setUsername(username);
             cm.setPassward(passward);
             session.sendPacket(cm);
+            return ;
         }
 
     }

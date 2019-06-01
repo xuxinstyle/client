@@ -11,4 +11,8 @@ public interface ILoginService {
      * 客户端与服务端连接后客户端显示欢迎界面
      */
     void welcome(TSession session);
+    /**
+     *
+     */
+    void doLoginAfter(TSession session, int status);
 }

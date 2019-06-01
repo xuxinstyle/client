@@ -1,9 +1,13 @@
 package com.game.register.packet;
 
+import org.msgpack.annotation.Message;
+
 /**
  * @Author：xuxin
  * @Date: 2019/5/29 18:36
+ * @id 5
  */
+@Message
 public class CM_Register {
     /**
      * 账号

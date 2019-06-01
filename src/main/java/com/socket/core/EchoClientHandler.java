@@ -5,12 +5,16 @@ import com.socket.Utils.ProtoStuffUtil;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
 import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
+import com.socket.heartbeat.HeartBeatRequestPack;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.apache.log4j.Logger;
+
 import org.msgpack.MessagePack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class EchoClientHandler extends ChannelInboundHandlerAdapter {
@@ -18,7 +22,9 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
      * 因为 Netty 采用线程池，所以这里使用原子操作类来进行计数
      */
     private static AtomicInteger atomicInteger = new AtomicInteger();
-    Logger logger = Logger.getLogger(EchoClientHandler.class);
+    private static final int HEARTBEAT_INTERVAL = 5;
+    Logger logger = LoggerFactory.getLogger(EchoClientHandler.class);
+
     /**
      * 因为多线程，所以使用原子操作类来进行计数
      */
@@ -29,20 +35,45 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
+        SendConnectPack(ctx);
         /**
-         * 多余 数组、List、Set、Map 等，对立面的元素逐个进行发送，则对方也是逐个接收
-         * 否则如果直接发送 数组、List、Set、Map 等，则对方会统一接收
-         * 注意：因为使用LengthFieldPrepender、LengthFieldBasedFrameDecoder编解码器处理半包消息
-         * 所以这里连续发送也不会出现 TCP 粘包/拆包
+         * 定时发送心跳包
+         *
          */
+        scheduleSendHeartBeat(ctx);
+    }
+    private void scheduleSendHeartBeat(ChannelHandlerContext ctx) {
+        ctx.executor().schedule(()->{
+            if(ctx.channel().isActive()){
+
+                HeartBeatRequestPack heartBeatRequestPack = new HeartBeatRequestPack();
+
+                ctx.writeAndFlush(heartBeatRequestPack);
+            }
+        },HEARTBEAT_INTERVAL,TimeUnit.MINUTES);
+    }
+
+
+    /**
+     * 多余 数组、List、Set、Map 等，对立面的元素逐个进行发送，则对方也是逐个接收
+     * 否则如果直接发送 数组、List、Set、Map 等，则对方会统一接收
+     * 注意：因为使用LengthFieldPrepender、LengthFieldBasedFrameDecoder编解码器处理半包消息
+     * 所以这里连续发送也不会出现 TCP 粘包/拆包
+     *
+     */
+    private void SendConnectPack(ChannelHandlerContext ctx) {
+        logger.info("发了Connect了");
         MyPack myPack = new MyPack();
         myPack.setpId(2);
         CM_Connect cm = new CM_Connect();
         byte[] serializer = ProtoStuffUtil.serializer(cm);
         myPack.setPacket(serializer);
         myPack.setTime(System.nanoTime());
+
         ctx.writeAndFlush(myPack);
+
     }
+
 
     /**
      * 当服务端返回应答消息时，channelRead 方法被调用，从 Netty 的 ByteBuf 中读取并打印应答消息

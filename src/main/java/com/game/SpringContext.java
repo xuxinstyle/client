@@ -27,6 +27,7 @@ public class SpringContext implements ApplicationContextAware {
     private final void init(){
         instance = this;
     }
+
     @Autowired
     public ServerConfigValue serverConfigValue;
 
