@@ -18,7 +18,7 @@ public class LoginFacade {
     @HandlerAnno
     public void doLoginAfter(TSession session, SM_Login res){
         try {
-            SpringContext.getLoginService().doLoginAfter(session, res.getStatus());
+            SpringContext.getLoginService().doLoginAfter(session, res.getStatus(), res.getAccountId());
         }catch (Exception e){
             logger.error("非法错误"+e.toString());
 

@@ -7,6 +7,7 @@ import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -15,7 +16,9 @@ import java.util.Map;
  */
 public class TSession {
     private static final Logger logger = Logger.getLogger(TSession.class);
+    // 里面放在线的玩家账号信息 <信息标识，玩家信息>
 
+    private String accountId;
     private static int index = 0;
     private final int id = ++index;
     private final long createTime = System.currentTimeMillis();
@@ -42,6 +45,15 @@ public class TSession {
         this.port = adds[1];
         //this.taskQueue = new ConcurrentId
     }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
     public void sendPacket(Object res) {
         try{
             int opIndex = 0;

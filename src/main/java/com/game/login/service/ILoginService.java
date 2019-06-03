@@ -14,5 +14,5 @@ public interface ILoginService {
     /**
      *
      */
-    void doLoginAfter(TSession session, int status);
+    void doLoginAfter(TSession session, int status, String accountId);
 }

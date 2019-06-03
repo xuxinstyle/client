@@ -34,8 +34,8 @@ public class HandlerDefintion implements IHandlerInvoke{
     @Override
     public Object invoke(TSession session, int opIndex, Object packet) {
 
-        System.out.println("session:"+session+" opIndex:"+opIndex+" packet:"+packet);
-        System.out.println("method:"+method+" bean:"+bean);
+        /*System.out.println("session:"+session+" opIndex:"+opIndex+" packet:"+packet);
+        System.out.println("method:"+method+" bean:"+bean);*/
         ReflectionUtils.makeAccessible(method);
         Object result = null;
         switch (indextype){

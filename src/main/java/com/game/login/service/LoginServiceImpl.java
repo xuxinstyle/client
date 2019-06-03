@@ -2,6 +2,9 @@ package com.game.login.service;
 
 import com.game.SpringContext;
 import com.game.login.packet.CM_Login;
+import com.game.scence.constant.SceneType;
+import com.game.scence.packet.CM_EnterInitScence;
+import com.socket.core.SessionUtil;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
 
@@ -52,9 +55,19 @@ public class LoginServiceImpl implements ILoginService{
     }
 
     @Override
-    public void doLoginAfter(TSession session , int status) {
+    public void doLoginAfter(TSession session , int status, String accountId) {
         if(status == 1){
             System.out.println("登录成功！");
+            /**
+             * 进入新手村
+             */
+            session.setAccountId(accountId);
+
+            CM_EnterInitScence cm = new CM_EnterInitScence();
+            cm.setAccountId(accountId);
+            cm.setType(SceneType.NoviceVillage);
+            session.sendPacket(cm);
+
         }else if(status == 0){
             System.out.println("登录失败，密码错误请重新输入账号密码");
             welcome(session);
