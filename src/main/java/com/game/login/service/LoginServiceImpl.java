@@ -65,7 +65,6 @@ public class LoginServiceImpl implements ILoginService{
 
             CM_EnterInitScence cm = new CM_EnterInitScence();
             cm.setAccountId(accountId);
-            cm.setType(SceneType.NoviceVillage);
             session.sendPacket(cm);
 
         }else if(status == 0){

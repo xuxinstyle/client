@@ -20,7 +20,7 @@ public class ScenceFacade {
         try {
             SpringContext.getScenceService().enterInitScence(res.getAccountId(), res.getType());
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 }

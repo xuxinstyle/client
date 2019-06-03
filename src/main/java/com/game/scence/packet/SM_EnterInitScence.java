@@ -5,6 +5,7 @@ import com.game.scence.constant.SceneType;
 /**
  * @Author：xuxin
  * @Date: 2019/6/3 18:16
+ * @id 11
  */
 public class SM_EnterInitScence {
     /**

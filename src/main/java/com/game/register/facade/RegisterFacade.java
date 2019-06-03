@@ -18,7 +18,7 @@ public class RegisterFacade {
             System.out.println("恭喜你注册成功，自动跳转到游戏界面");
             SpringContext.getLoginService().welcome(session);
         }else{
-            System.out.println("*****用户名已存在，注册失败！请重新注册*****");
+            System.out.println("*****用户名已存在，注册失败！请重新login注册*****");
             SpringContext.getRegisterService().register(session);
         }
     }

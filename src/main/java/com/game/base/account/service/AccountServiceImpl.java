@@ -35,7 +35,8 @@ public class AccountServiceImpl implements AccountService {
     public void doCreatePlayerAfter(TSession session, String accountId, int status) {
         if(status==1){
             System.out.println(accountId+" 恭喜你创建角色成功");
-            CM_EnterInitScence cm = new CM_EnterInitScence();
+
+
         }else if(status == 0){
             SpringContext.getAccountService().enterCreatePlayer(session,accountId);
         }

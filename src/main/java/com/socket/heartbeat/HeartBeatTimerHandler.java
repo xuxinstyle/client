@@ -1,5 +1,8 @@
 package com.socket.heartbeat;
 
+import com.game.connect.packet.CM_Connect;
+import com.socket.Utils.ProtoStuffUtil;
+import com.socket.core.MyPack;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -24,8 +27,13 @@ public class HeartBeatTimerHandler extends ChannelInboundHandlerAdapter {
     private void scheduleSendHeartBeat(ChannelHandlerContext ctx) {
         ctx.executor().schedule(()->{
             if(ctx.channel().isActive()){
-
+                MyPack myPack = new MyPack();
+                myPack.setpId(0);
                 HeartBeatRequestPack heartBeatRequestPack = new HeartBeatRequestPack();
+                byte[] serializer = ProtoStuffUtil.serializer(heartBeatRequestPack);
+                myPack.setPacket(serializer);
+                myPack.setTime(System.nanoTime());
+
 
                 ctx.writeAndFlush(heartBeatRequestPack);
             }
