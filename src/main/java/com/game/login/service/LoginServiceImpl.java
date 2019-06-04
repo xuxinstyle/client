@@ -72,4 +72,9 @@ public class LoginServiceImpl implements ILoginService{
             welcome(session);
         }
     }
+
+    @Override
+    public void logout() {
+        System.out.println("账号在其他地方登录！");
+    }
 }

@@ -29,13 +29,11 @@ public class HeartBeatTimerHandler extends ChannelInboundHandlerAdapter {
             if(ctx.channel().isActive()){
                 MyPack myPack = new MyPack();
                 myPack.setpId(0);
-                HeartBeatRequestPack heartBeatRequestPack = new HeartBeatRequestPack();
-                byte[] serializer = ProtoStuffUtil.serializer(heartBeatRequestPack);
+                HeartBeatResponsePack heartBeatResponsePack = new HeartBeatResponsePack();
+                byte[] serializer = ProtoStuffUtil.serializer(heartBeatResponsePack);
                 myPack.setPacket(serializer);
                 myPack.setTime(System.nanoTime());
-
-
-                ctx.writeAndFlush(heartBeatRequestPack);
+                ctx.writeAndFlush(heartBeatResponsePack);
             }
         },HEARTBEAT_INTERVAL,TimeUnit.MINUTES);
     }

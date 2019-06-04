@@ -37,7 +37,7 @@ public class start {
             new RegistSerializerMessage().init();
             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
             applicationContext.start();
-            connect("127.0.0.1", 8888);
+            connect("127.0.0.1", 8889);
         }
 
         public void connect(String host, int port) {

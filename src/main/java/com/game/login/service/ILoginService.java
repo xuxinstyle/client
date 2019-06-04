@@ -12,7 +12,8 @@ public interface ILoginService {
      */
     void welcome(TSession session);
     /**
-     *
+     * 登录后做的事情
      */
     void doLoginAfter(TSession session, int status, String accountId);
+    void logout();
 }
