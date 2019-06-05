@@ -18,15 +18,23 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void enterCreatePlayer(TSession session, String accountId) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("请给你的角色取个吊炸天的昵称吧：");
-        String nickName = scanner.next();
-        System.out.println("请请选择你要创建的职业：选择三种职业中的一种（道士:taoist/法师:mage /战士:warrior）");
-        String career = scanner.next();
-
         CM_CreatePlayer cm  = new CM_CreatePlayer();
         cm.setAccountId(accountId);
+
+        System.out.println("请给你的角色取个吊炸天的昵称吧：");
+        String nickName = scanner.next();
         cm.setNickName(nickName);
-        cm.setCareer(career);
+        String career = "";
+        while(true) {
+            System.out.println("请选择你要创建的职业：选择三种职业中的一种（战士:1 /法师:2 /道士:3）");
+            career=scanner.next();
+            if (Integer.parseInt(career) > 3 || Integer.parseInt(career) < 1) {
+                System.out.println("非法输入，请重新输入！");
+                continue;
+            }
+            break;
+        }
+        cm.setCareer(Integer.parseInt(career));
         session.sendPacket(cm);
 
     }

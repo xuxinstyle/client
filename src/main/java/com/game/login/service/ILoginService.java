@@ -15,5 +15,16 @@ public interface ILoginService {
      * 登录后做的事情
      */
     void doLoginAfter(TSession session, int status, String accountId);
+
+    /**
+     * 登出
+     */
     void logout();
+    /**
+     * 账号输入错误
+     */
+    void loginNoAccount(TSession session);
+
+
+
 }

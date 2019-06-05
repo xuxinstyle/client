@@ -1,6 +1,8 @@
 package com.game.scence.service;
 
 import com.game.scence.constant.SceneType;
+import com.game.scence.packet.SM_Move;
+import com.socket.core.TSession;
 
 /**
  * @Author：xuxin
@@ -8,5 +10,7 @@ import com.game.scence.constant.SceneType;
  */
 public interface ScenceService {
 
-    void enterInitScence(String accountId, int sceneType);
+    void enterInitScence(TSession session, String accountId, int sceneType);
+
+    void enterMap(TSession session, int mapId);
 }

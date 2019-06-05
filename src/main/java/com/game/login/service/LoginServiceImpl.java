@@ -36,20 +36,24 @@ public class LoginServiceImpl implements ILoginService{
             } else if (code.trim().toLowerCase().equals("esc")) {
                 System.out.println("是否确认退出游戏？（yes/no）");
                 String status = scanner.next();
-                if (status.trim().toLowerCase().equals("yes")) {
-                    session.esc();
-
-                    return;
-                } else if (status.trim().toLowerCase().equals("no")) {
-
-                    continue;
-
+                while(true) {
+                    if (status.trim().toLowerCase().equals("yes")) {
+                        session.esc();
+                        return;
+                    } else if (status.trim().toLowerCase().equals("no")) {
+                        continue;
+                    }else {
+                        System.out.println("非法指令");
+                    }
                 }
             }else if(code.trim().toLowerCase().equals("register")){
                 // 注册
                 SpringContext.getRegisterService().register(session);
+                return;
+            }else{
+                System.out.println("非法指令");
             }
-            return ;
+
         }
 
     }
@@ -68,7 +72,7 @@ public class LoginServiceImpl implements ILoginService{
             session.sendPacket(cm);
 
         }else if(status == 0){
-            System.out.println("登录失败，密码错误请重新输入账号密码");
+            System.out.println("登录失败，密码错误请重新输入密码");
             welcome(session);
         }
     }
@@ -76,5 +80,11 @@ public class LoginServiceImpl implements ILoginService{
     @Override
     public void logout() {
         System.out.println("账号在其他地方登录！");
+    }
+
+    @Override
+    public void loginNoAccount(TSession session) {
+        System.out.println("登录失败，没有注册该账号");
+        welcome(session);
     }
 }

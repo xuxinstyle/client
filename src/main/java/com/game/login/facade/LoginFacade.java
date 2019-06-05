@@ -2,6 +2,7 @@ package com.game.login.facade;
 
 import com.game.SpringContext;
 import com.game.login.packet.SM_Login;
+import com.game.login.packet.SM_LoginNoAcount;
 import com.game.login.packet.SM_Logout;
 import com.socket.core.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
@@ -29,6 +30,10 @@ public class LoginFacade {
     public void doLogout(TSession session, SM_Logout res){
         SpringContext.getLoginService().logout();
 
+    }
+    @HandlerAnno
+    public void login(TSession session, SM_LoginNoAcount res){
+        SpringContext.getLoginService().loginNoAccount(session);
     }
 
 }

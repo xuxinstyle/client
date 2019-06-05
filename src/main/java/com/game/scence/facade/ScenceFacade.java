@@ -2,6 +2,7 @@ package com.game.scence.facade;
 
 import com.game.SpringContext;
 import com.game.scence.packet.SM_EnterInitScence;
+import com.game.scence.packet.SM_Move;
 import com.socket.core.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -18,7 +19,15 @@ public class ScenceFacade {
     @HandlerAnno
     public void enterInitScence(TSession session, SM_EnterInitScence res){
         try {
-            SpringContext.getScenceService().enterInitScence(res.getAccountId(), res.getType());
+            SpringContext.getScenceService().enterInitScence(session ,res.getAccountId(), res.getType());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    @HandlerAnno
+    public void enterScence(TSession session, SM_Move sm){
+        try {
+            SpringContext.getScenceService().enterMap(session,sm.getStatus());
         }catch (Exception e){
             e.printStackTrace();
         }

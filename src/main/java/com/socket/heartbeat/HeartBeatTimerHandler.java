@@ -28,7 +28,7 @@ public class HeartBeatTimerHandler extends ChannelInboundHandlerAdapter {
         ctx.executor().schedule(()->{
             if(ctx.channel().isActive()){
                 MyPack myPack = new MyPack();
-                myPack.setpId(0);
+                myPack.setpId(-1);
                 HeartBeatResponsePack heartBeatResponsePack = new HeartBeatResponsePack();
                 byte[] serializer = ProtoStuffUtil.serializer(heartBeatResponsePack);
                 myPack.setPacket(serializer);
