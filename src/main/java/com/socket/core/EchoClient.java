@@ -19,7 +19,7 @@ public class EchoClient {
      */
     public static void main(String[] args) {
         /*for (int i = 0; i < 2; i++) {
-            new Thread(new MyThread()).start();
+            new Thread(new MyThread()).Start();
         }*/
         new Thread(new MyThread()).start();
     }

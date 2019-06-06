@@ -19,13 +19,12 @@ public class TSession {
     // 里面放在线的玩家账号信息 <信息标识，玩家信息>
 
     private String accountId;
-    private static int index = 0;
-    private final int id = ++index;
     private final long createTime = System.currentTimeMillis();
     private final Channel channel;
     private final String ip;
     private String inetIp;
     private final String port;
+    private int mapId;
     //private final ITaskQueue taskQueue;
     private final IActionDispatcher actionDispatcher;
     public TSession(Channel channel){
@@ -81,4 +80,19 @@ public class TSession {
         channel.close();
     }
 
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
+    }
 }
