@@ -3,8 +3,8 @@ package com.game.login.service;
 import com.game.SpringContext;
 import com.game.login.packet.CM_Login;
 import com.game.scence.constant.SceneType;
-import com.game.scence.packet.CM_EnterInitScence;
-import com.socket.core.SessionUtil;
+
+import com.game.scence.packet.CM_EnterMap;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
 
@@ -59,15 +59,14 @@ public class LoginServiceImpl implements ILoginService{
     }
 
     @Override
-    public void doLoginAfter(TSession session , int status, String accountId) {
+    public void doLoginAfter(TSession session , int status, String accountId, int mapId) {
         if(status == 1){
             System.out.println("登录成功！");
-            /**
-             * 进入新手村
-             */
+
             session.setAccountId(accountId);
 
-            CM_EnterInitScence cm = new CM_EnterInitScence();
+            CM_EnterMap cm = new CM_EnterMap();
+            cm.setMapId(mapId);
             cm.setAccountId(accountId);
             session.sendPacket(cm);
 
@@ -78,8 +77,11 @@ public class LoginServiceImpl implements ILoginService{
     }
 
     @Override
-    public void logout() {
+    public void logout(TSession session) {
         System.out.println("账号在其他地方登录！");
+
+        session.getChannel().close();
+
     }
 
     @Override

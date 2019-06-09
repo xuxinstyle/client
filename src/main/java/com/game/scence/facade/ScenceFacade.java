@@ -15,18 +15,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScenceFacade {
     private static final Logger logger = LoggerFactory.getLogger(ScenceFacade.class);
-    @HandlerAnno
-    public void enterInitScence(TSession session, SM_EnterInitScence res){
-        try {
-            SpringContext.getScenceService().enterInitScence(session ,res.getAccountId(), res.getType());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+
     @HandlerAnno
     public void enterScence(TSession session, SM_EnterMap sm){
         try {
-            SpringContext.getScenceService().enterMap(session,sm.getMapId());
+            SpringContext.getScenceService().enterMap(session,session.getAccountId(),sm.getContext(),sm.getMapId(),sm.getX(),sm.getY());
         }catch (Exception e){
             logger.error("进入地图失败");
             e.printStackTrace();
@@ -48,6 +41,15 @@ public class ScenceFacade {
             SpringContext.getScenceService().showAccount(session, sm);
         }catch (Exception e){
             logger.error("查看{}地图玩家{}信息失败",session.getMapId(), sm.getAccountId());
+            e.printStackTrace();
+        }
+    }
+    @HandlerAnno
+    public void move(TSession session, SM_Move sm){
+        try{
+            SpringContext.getScenceService().move(session,sm);
+        }catch (Exception e){
+            System.out.println("移动到x={"+sm.getX()+"},y={"+sm.getY()+"}失败); sm.getX(),sm.getY()");
             e.printStackTrace();
         }
     }

@@ -12,10 +12,6 @@ public class MyPack {
      * 自己的协议包
      */
     private byte[] packet;
-    /**
-     *  发送时间
-     */
-    private long time;
 
     public Integer getpId() {
         return pId;
@@ -33,20 +29,11 @@ public class MyPack {
         this.packet = packet;
     }
 
-    public long getTime() {
-        return time;
-    }
-
-    public void setTime(long time) {
-        this.time = time;
-    }
-
     @Override
     public String toString() {
         return "MyPack{" +
                 "pId=" + pId +
                 ", packet=" + packet +
-                ", time=" + time +
                 '}';
     }
 }

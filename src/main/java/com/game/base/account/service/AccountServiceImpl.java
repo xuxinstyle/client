@@ -2,7 +2,6 @@ package com.game.base.account.service;
 
 import com.game.SpringContext;
 import com.game.base.account.packet.CM_CreatePlayer;
-import com.game.scence.packet.CM_EnterInitScence;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
 

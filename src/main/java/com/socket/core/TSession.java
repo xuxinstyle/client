@@ -24,8 +24,7 @@ public class TSession {
     private final String ip;
     private String inetIp;
     private final String port;
-    private int mapId;
-    //private final ITaskQueue taskQueue;
+    private int mapId=0;
     private final IActionDispatcher actionDispatcher;
     public TSession(Channel channel){
         this(channel, null);
@@ -42,7 +41,6 @@ public class TSession {
         String[] adds = ip.split(":");
         this.inetIp = adds[0].substring(1);//FIXME:这里不太理解为什么
         this.port = adds[1];
-        //this.taskQueue = new ConcurrentId
     }
 
     public String getAccountId() {
@@ -65,9 +63,7 @@ public class TSession {
                 logger.error("发送协议错误，没有对应的协议id");
                 return;
             }
-            long start = System.nanoTime();
             MyPack pack = new MyPack();
-            pack.setTime(start);
             pack.setpId(opIndex);
             pack.setPacket(ProtoStuffUtil.serializer(res));
             channel.writeAndFlush(pack);

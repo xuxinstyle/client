@@ -22,9 +22,7 @@ public class IdentifyThreadPoolExecutor extends ThreadPoolExecutor implements II
     }
     @Override
     public void addSessionTask(TSession session, Runnable task) {
-        if(isShutdown()){
-            getRejectedExecutionHandler().rejectedExecution(task,this);
-        }
+        this.submit(task);
 
     }
 }

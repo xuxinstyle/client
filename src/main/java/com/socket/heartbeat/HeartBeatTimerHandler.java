@@ -32,7 +32,6 @@ public class HeartBeatTimerHandler extends ChannelInboundHandlerAdapter {
                 HeartBeatResponsePack heartBeatResponsePack = new HeartBeatResponsePack();
                 byte[] serializer = ProtoStuffUtil.serializer(heartBeatResponsePack);
                 myPack.setPacket(serializer);
-                myPack.setTime(System.nanoTime());
                 ctx.writeAndFlush(heartBeatResponsePack);
             }
         },HEARTBEAT_INTERVAL,TimeUnit.MINUTES);

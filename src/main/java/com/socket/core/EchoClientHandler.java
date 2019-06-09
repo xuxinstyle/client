@@ -6,6 +6,7 @@ import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
 import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
 import com.socket.heartbeat.HeartBeatRequestPack;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -21,7 +22,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     /**
      * 因为 Netty 采用线程池，所以这里使用原子操作类来进行计数
      */
-    private static AtomicInteger atomicInteger = new AtomicInteger();
     private static final int HEARTBEAT_INTERVAL = 5;
     Logger logger = LoggerFactory.getLogger(EchoClientHandler.class);
 
@@ -34,7 +34,10 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
+        if(!SessionUtil.createChannelSession(ctx.channel(), actionDispatcher)){
+            ctx.channel().close();
+            return;
+        }
         SendConnectPack(ctx);
         /**
          * 定时发送心跳包
@@ -68,7 +71,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         CM_Connect cm = new CM_Connect();
         byte[] serializer = ProtoStuffUtil.serializer(cm);
         myPack.setPacket(serializer);
-        myPack.setTime(System.nanoTime());
 
         ctx.writeAndFlush(myPack);
 
@@ -82,11 +84,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, java.lang.Object msg) throws Exception {
         //服务端消息传来的地方，在这个地方处理服务端传来的消息，并处理相关逻辑
 
-        if(logger.isDebugEnabled()){
-            logger.debug((atomicInteger.addAndGet(1)) + "--->" + Thread.currentThread().getName() + ",The server receive  order : " + msg);
-        }else {
-            atomicInteger.addAndGet(1);
-        }
         List<Object> objects =(List<Object>)msg;
         if(objects.size()<=0){
             logger.error("错了错了，传来的包为空！");
@@ -95,14 +92,13 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         String object0 = objects.get(0).toString();
         int opIndex = Integer.parseInt(object0);
         Object packet = objects.get(1);
-        String time = objects.get(2).toString();
-        TSession session = new TSession(ctx.channel(),actionDispatcher);
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
         Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
         byte[] unpack = MessagePack.unpack(MessagePack.pack(packet), byte[].class);
 
         Object pack = ProtoStuffUtil.deserializer(unpack, aClass);
         //分发处理
-        actionDispatcher.doHandle(session,opIndex,pack,Long.parseLong(time));
+        actionDispatcher.handle(session,opIndex,pack,System.nanoTime());
     }
 
     /**

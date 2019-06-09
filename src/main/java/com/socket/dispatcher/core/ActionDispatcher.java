@@ -3,6 +3,8 @@ package com.socket.dispatcher.core;
 import com.socket.core.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
+import com.socket.dispatcher.executor.IIdentifyThreadPool;
+import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -21,6 +23,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     private static Logger logger = Logger.getLogger(ActionDispatcher.class);
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
+    private final IIdentifyThreadPool executor=new IdentifyThreadPoolExecutor();;
 
     public ActionDispatcher() {
 
@@ -28,10 +31,10 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
     @Override
     public void handle(TSession session, int opIndex, Object packet, long decodeTime) {
-        doHandle(session, opIndex, packet,decodeTime);
-
+        //doHandle(session, opIndex, packet);
+        executor.addSessionTask(session ,new IoHandleEvent(this, session, opIndex, packet, decodeTime));
     }
-    public void doHandle(TSession session, int opIndex, Object packet, long decodeTime) {
+    public void doHandle(TSession session, int opIndex, Object packet) {
 
         if(logger.isDebugEnabled()){
             logger.debug("到达dohandle:pack="+packet.getClass());
@@ -100,7 +103,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
         @Override
         public void run() {
             try {
-                dispatcher.doHandle(session, opIndex, packet, decodeTime);
+                dispatcher.doHandle(session, opIndex, packet);
             }catch (Exception e){
                 logger.error("消息[" + packet.getClass() + "[处理异常" , e);
             }

@@ -14,12 +14,12 @@ public interface ILoginService {
     /**
      * 登录后做的事情
      */
-    void doLoginAfter(TSession session, int status, String accountId);
+    void doLoginAfter(TSession session, int status, String accountId, int mapId);
 
     /**
      * 登出
      */
-    void logout();
+    void logout(TSession session);
     /**
      * 账号输入错误
      */

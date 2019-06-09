@@ -13,10 +13,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class ScenceManager {
+    /**
+     * 地图中存放的玩家信息
+     */
     private static Map<Integer ,Map<String ,String>> accountIdsMap = new ConcurrentHashMap<>();
-
+    /**
+     * 存放地图资源信息
+     */
+    private static Map<Integer, String> map = new ConcurrentHashMap<>();
+    public String getContext(int mapId){
+        return map.get(mapId);
+    }
+    public void put(int mapId, String context){
+        map.putIfAbsent(mapId, context);
+    }
     public void addAccount(int mapId, Map<String ,String> accounts){
-
         accountIdsMap.put(mapId,accounts );
     }
     public Map<String ,String>getAccountIds(int mapId){
