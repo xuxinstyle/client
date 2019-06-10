@@ -37,7 +37,7 @@ public class Start {
             new RegistSerializerMessage().init();
             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
             applicationContext.start();
-            connect("127.0.0.1", 8889);
+            connect("127.0.0.1", 8888);
         }
 
         public void connect(String host, int port) {
@@ -53,7 +53,7 @@ public class Start {
                 b.group(group).channel(NioSocketChannel.class)
                         .option(ChannelOption.TCP_NODELAY, true)
                         // 设置TCP连接超时时间
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                         .handler(new ChannelInitializer<SocketChannel>() {
                             @Override
                             public void initChannel(SocketChannel ch) throws Exception {
@@ -64,12 +64,14 @@ public class Start {
                                  * LengthFieldBasedFrameDecoder：长度域解码器——放在MsgpackDecoder解码器前面
                                  * 关于 长度域编解码器处理半包消息，本文不做详细讲解，会有专门篇章进行说明
                                  */
-                                ch.pipeline().addLast(new IMIdleStateHandler());
+
                                 ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                                 ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
-                                ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
+                                ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(1024, 0, 2, 0, 2));
                                 ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                                 ch.pipeline().addLast(new EchoClientHandler());
+                                ch.pipeline().addLast(new HeartBeatTimerHandler());
+                                /*ch.pipeline().addLast(new IMIdleStateHandler());*/
                             }
                         });
 

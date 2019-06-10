@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2019/6/1 17:36
  */
 public class HeartBeatTimerHandler extends ChannelInboundHandlerAdapter {
-    private static final int HEARTBEAT_INTERVAL = 5;
+    private static final int HEARTBEAT_INTERVAL = 15;
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
@@ -34,6 +34,6 @@ public class HeartBeatTimerHandler extends ChannelInboundHandlerAdapter {
                 myPack.setPacket(serializer);
                 ctx.writeAndFlush(heartBeatResponsePack);
             }
-        },HEARTBEAT_INTERVAL,TimeUnit.MINUTES);
+        },HEARTBEAT_INTERVAL,TimeUnit.SECONDS);
     }
 }
