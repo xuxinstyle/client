@@ -67,13 +67,19 @@ public class ScenceServiceImpl implements ScenceService{
                         cm.setAccountId(session.getAccountId());
                         session.sendPacket(cm);
                         break;
-                    }
+                    }else
                     if("2".equals(split[1].trim().toLowerCase())){
                         CM_EnterMap cm = new CM_EnterMap();
                         cm.setMapId(2);
                         cm.setAccountId(session.getAccountId());
                         session.sendPacket(cm);
                         break;
+                    }else{
+                        System.out.println("没有地图资源无法进入");
+                        /*CM_EnterMap cm = new CM_EnterMap();
+                        cm.setMapId(Integer.parseInt(split[1]));
+                        cm.setAccountId(session.getAccountId());
+                        session.sendPacket(cm);*/
                     }
 
                 }else if("show".equals(split[0].trim().toLowerCase())){

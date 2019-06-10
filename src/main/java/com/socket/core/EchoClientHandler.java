@@ -110,4 +110,10 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("断开连接");
+        super.channelInactive(ctx);
+    }
 }
