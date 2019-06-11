@@ -1,5 +1,7 @@
 package com.game.scence.service;
 
+import com.game.scence.constant.SceneType;
+import com.game.scence.model.Position;
 import com.game.scence.packet.*;
 import com.socket.core.TSession;
 import org.slf4j.Logger;
@@ -7,8 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @Author：xuxin
@@ -20,7 +21,7 @@ public class ScenceServiceImpl implements ScenceService{
     @Autowired
     private ScenceManager scenceManager;
     @Override
-    public void enterMap(TSession session, String accountId, String context, int sceneType,int x,int y) {
+    public void enterMap(TSession session, String accountId, String context,String strPosition, int sceneType,int x,int y) {
         String mapContext = scenceManager.getContext(sceneType);
         if(mapContext==null){
             scenceManager.put(sceneType, context);
@@ -28,14 +29,23 @@ public class ScenceServiceImpl implements ScenceService{
         switch (sceneType){
             case 1:
                 session.setMapId(sceneType);
+                scenceManager.setAccountIdsMap(sceneType, accountId, strPosition);
                 System.out.println("欢迎进入:新手村");
-                showMap(sceneType,x,y);
+                CM_OnlinePlayerOperate cm = new CM_OnlinePlayerOperate();
+                cm.setMapId(sceneType);
+                session.sendPacket(cm);
+                //showMap(sceneType,scenceManager.getPostionMap(sceneType));
                 doOperate(session, 1);
                 break;
             case 2:
                 session.setMapId(sceneType);
+                scenceManager.setAccountIdsMap(sceneType, accountId, strPosition);
                 System.out.println("欢迎进入:野外");
-                showMap(sceneType,x,y);
+                CM_OnlinePlayerOperate cm1  = new CM_OnlinePlayerOperate();
+                cm1.setMapId(sceneType);
+                session.sendPacket(cm1);
+                //showMap(sceneType,scenceManager.getPostionMap(sceneType));
+
                 doOperate(session, 2);
                 break;
                 default :
@@ -76,10 +86,6 @@ public class ScenceServiceImpl implements ScenceService{
                         break;
                     }else{
                         System.out.println("没有地图资源无法进入");
-                        /*CM_EnterMap cm = new CM_EnterMap();
-                        cm.setMapId(Integer.parseInt(split[1]));
-                        cm.setAccountId(session.getAccountId());
-                        session.sendPacket(cm);*/
                     }
 
                 }else if("show".equals(split[0].trim().toLowerCase())){
@@ -119,7 +125,7 @@ public class ScenceServiceImpl implements ScenceService{
 
     @Override
     public void showAllAccount(TSession session, String context) {
-        String[] split = context.split(",");
+        String[] split = context.split("#");
         for (String str:split){
             System.out.println(str);
         }
@@ -133,7 +139,13 @@ public class ScenceServiceImpl implements ScenceService{
             doOperate(session, session.getMapId());
         }else {
             System.out.println("[" + sm.getAccountId() + "]:");
-            System.out.println("昵称：" + sm.getNickName() + "  职业：" + sm.getCareer() + "   等级：" + sm.getLevel());
+            StringBuffer str = new StringBuffer();
+            str.append("昵称：[" + sm.getNickName()+"] " );
+            str.append("角色名：["+sm.getPlayerName()+"] ");
+            str.append("职业：[" + sm.getCareer()+"] " );
+            str.append("等级：[" + sm.getLevel()+"] ");
+            str.append("位置：["+sm.getX()+","+sm.getY()+"] ");
+            System.out.println(str.toString());
             doOperate(session, session.getMapId());
         }
     }
@@ -141,7 +153,11 @@ public class ScenceServiceImpl implements ScenceService{
     @Override
     public void move(TSession session, SM_Move sm) {
         if(sm.getStatus()==1){
-            showMap(session.getMapId(),sm.getX(),sm.getY());
+            scenceManager.setAccountIdsMap(session.getMapId(),session.getAccountId(), sm.getX(),sm.getY());
+            CM_OnlinePlayerOperate cm = new CM_OnlinePlayerOperate();
+            cm.setMapId(session.getMapId());
+            session.sendPacket(cm);
+            //showMap(session.getMapId(),scenceManager.getPostionMap(session.getMapId()));
             doOperate(session, session.getMapId());
         }else {
             System.out.println("移动失败，该位置有阻挡点，不能移动");
@@ -149,26 +165,53 @@ public class ScenceServiceImpl implements ScenceService{
         }
     }
 
-    private void showMap(int mapId,int x,int y) {
+    @Override
+    public void showMap(TSession session, String scenePositions) {
+
+        List<Position> list = doParsePosition(scenePositions);
+        showMap(session.getMapId(), list);
+    }
+
+    private List<Position> doParsePosition(String scenePositions) {
+        List<Position> list = new ArrayList<>();
+        String[] positions = scenePositions.split(":");
+        for(String str:positions){
+            String[] split = str.split(",");
+            if(split.length!=2){
+                return null;
+            }
+            Position position = new Position(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+            list.add(position);
+        }
+        return list;
+    }
+
+    private void showMap(int mapId,List<Position> map) {
         String context = scenceManager.getContext(mapId);
         String[] split = context.split(",");
+
         String[] nowPosion = split;
-        for(int i = 0;i<split.length;i++){
-            StringBuffer nowy = new StringBuffer();
-            if(y==(i+1)){
-                String[] mapX = split[i].split(" ");
-                for (int j = 0;j<mapX.length;j++){
-                    if(j+1==x){
-                        nowy.append("* ");
-                    }else {
-                        nowy.append(mapX[j] + " ");
+        for(Position position: map){
+            int x= position.getX();
+            int y =position.getY();
+            for(int i = 0;i<split.length;i++){
+                StringBuffer nowy = new StringBuffer();
+                if(y==(i+1)){
+                    String[] mapX = split[i].split(" ");
+                    for (int j = 0;j<mapX.length;j++){
+                        if(j+1==x){
+                            nowy.append("* ");
+                        }else {
+                            nowy.append(mapX[j] + " ");
+                        }
                     }
+                    nowPosion[i] = nowy.toString();
+                }else{
+                    nowPosion[i] = split[i];
                 }
-                nowPosion[i] = nowy.toString();
-            }else{
-                nowPosion[i] = split[i];
             }
         }
+        System.out.println("地图："+SceneType.valueOf(mapId).getTypeName());
         for (int i = nowPosion.length-1;i>=0;i--){
             System.out.println(nowPosion[i]);
         }

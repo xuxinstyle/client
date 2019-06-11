@@ -19,7 +19,7 @@ public class ScenceFacade {
     @HandlerAnno
     public void enterScence(TSession session, SM_EnterMap sm){
         try {
-            SpringContext.getScenceService().enterMap(session,session.getAccountId(),sm.getContext(),sm.getMapId(),sm.getX(),sm.getY());
+            SpringContext.getScenceService().enterMap(session,session.getAccountId(),sm.getContext(),sm.getPosition(),sm.getMapId(),sm.getX(),sm.getY());
         }catch (Exception e){
             logger.error("进入地图失败");
             e.printStackTrace();
@@ -50,6 +50,16 @@ public class ScenceFacade {
             SpringContext.getScenceService().move(session,sm);
         }catch (Exception e){
             System.out.println("移动到x={"+sm.getX()+"},y={"+sm.getY()+"}失败); sm.getX(),sm.getY()");
+            e.printStackTrace();
+        }
+    }
+
+    @HandlerAnno
+    public void showMap(TSession session, SM_OnlinePlayerOperate sm){
+        try{
+            SpringContext.getScenceService().showMap(session,sm.getScenePositions());
+        }catch (Exception e){
+            System.out.println("显示地图失败");
             e.printStackTrace();
         }
     }

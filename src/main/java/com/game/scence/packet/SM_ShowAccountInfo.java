@@ -21,6 +21,35 @@ public class SM_ShowAccountInfo {
      * 等级
      */
     private int level;
+    /**
+     * 角色名
+     */
+    private String playerName;
+    private int x;
+    private int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 
     public String getNickName() {
         return nickName;

@@ -17,7 +17,7 @@ public interface ScenceService {
      * @param accountId
      * @param sceneType
      */
-    void enterMap(TSession session, String accountId, String context, int sceneType,int x,int y);
+    void enterMap(TSession session, String accountId, String context,String strPosition ,int sceneType,int x,int y);
 
     /**
      * 查看当前地图的所有玩家
@@ -39,4 +39,11 @@ public interface ScenceService {
      * @param sm
      */
     void move(TSession session, SM_Move sm);
+
+    /**
+     * 显示地图
+     * @param session
+     * @param scenePositions
+     */
+    void showMap(TSession session, String scenePositions);
 }

@@ -16,11 +16,21 @@ public enum SceneType {
 
     private int mapid;
 
-    private String name;
-    private SceneType(int mapid, String name){
-        this.mapid = mapid;
-    }
+    private String typeName;
 
+    private SceneType(int mapid, String typeName){
+        this.mapid = mapid;
+        this.typeName = typeName;
+    }
+    public static SceneType valueOf(int mapid){
+        SceneType[] values = SceneType.values();
+        for(SceneType sceneType : values){
+            if(sceneType.getMapid()==mapid){
+                return sceneType;
+            }
+        }
+        return null;
+    }
     public int getMapid() {
         return mapid;
     }
@@ -29,11 +39,11 @@ public enum SceneType {
         this.mapid = mapid;
     }
 
-    public String getName() {
-        return this.name;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

@@ -29,4 +29,8 @@
     <catalog id="19" value="com.game.scence.packet.SM_ShowAccountInfo"/>
     <catalog id="20" value="com.game.scence.packet.CM_Move"/>
     <catalog id="21" value="com.game.scence.packet.SM_Move"/>
+
+    <catalog id="22" value="com.game.scence.packet.CM_OnlinePlayerOperate"/>
+    <catalog id="23" value="com.game.scence.packet.SM_OnlinePlayerOperate"/>
+
 </protocols>

@@ -22,7 +22,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     /**
      * 因为 Netty 采用线程池，所以这里使用原子操作类来进行计数
      */
-    private static final int HEARTBEAT_INTERVAL = 5;
+    private static final int HEARTBEAT_INTERVAL = 15;
     Logger logger = LoggerFactory.getLogger(EchoClientHandler.class);
 
     /**
@@ -50,10 +50,10 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
             if(ctx.channel().isActive()){
 
                 HeartBeatRequestPack heartBeatRequestPack = new HeartBeatRequestPack();
-
-                ctx.writeAndFlush(heartBeatRequestPack);
+                TSession session = SessionUtil.getChannelSession(ctx.channel());
+                session.sendPacket(heartBeatRequestPack);
             }
-        },HEARTBEAT_INTERVAL,TimeUnit.MINUTES);
+        },HEARTBEAT_INTERVAL,TimeUnit.SECONDS);
     }
 
 

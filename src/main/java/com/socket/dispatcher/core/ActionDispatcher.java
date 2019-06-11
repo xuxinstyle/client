@@ -23,7 +23,7 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     private static Logger logger = Logger.getLogger(ActionDispatcher.class);
     private static Map<Class<?>, IHandlerInvoke> handlerMap = new HashMap<>();
 
-    private final IIdentifyThreadPool executor=new IdentifyThreadPoolExecutor();;
+    private final IIdentifyThreadPool executor=new IdentifyThreadPoolExecutor();
 
     public ActionDispatcher() {
 
