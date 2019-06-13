@@ -19,6 +19,7 @@ public class TSession {
     // 里面放在线的玩家账号信息 <信息标识，玩家信息>
 
     private String accountId;
+    private String passward;
     private final long createTime = System.currentTimeMillis();
     private final Channel channel;
     private final String ip;
@@ -72,6 +73,15 @@ public class TSession {
             logger.error(msg,e);
         }
     }
+
+    public String getPassward() {
+        return passward;
+    }
+
+    public void setPassward(String passward) {
+        this.passward = passward;
+    }
+
     public void esc(){
         channel.close();
     }

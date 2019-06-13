@@ -1,6 +1,7 @@
 package com.game.register.service;
 
 import com.game.register.packet.CM_Register;
+import com.game.utils.MD5Util;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
 
@@ -31,9 +32,11 @@ public class RegisterServiceImpl implements RegisterService {
                 System.out.println("两次输入的密码不一样！请重新输入");
                 continue;
             }
+
+            String passwordMD5 = MD5Util.inputPassToFormPass(passward);
             CM_Register cm = new CM_Register();
             cm.setUsername(username);
-            cm.setPassward(passward);
+            cm.setPassward(passwordMD5);
             session.sendPacket(cm);
             return ;
         }

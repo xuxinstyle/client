@@ -9,6 +9,18 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
+        <!--MD5-->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
+        </dependency>
+
         <!-- ProtoBuff序列化反序列化相关-->
         <dependency>
             <groupId>io.protostuff</groupId>

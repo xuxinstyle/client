@@ -36,14 +36,10 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     }
     public void doHandle(TSession session, int opIndex, Object packet) {
 
-        if(logger.isDebugEnabled()){
-            logger.debug("到达dohandle:pack="+packet.getClass());
-        }
+
 
         IHandlerInvoke defintion = handlerMap.get(packet.getClass());
-        if(logger.isDebugEnabled()){
-            logger.debug("defintion="+defintion+" packet class:"+packet.getClass());
-        }
+
         if(defintion == null){
             throw  new NullPointerException("no any handlerDefintion found for packet :"
             + packet.getClass().getSimpleName());
@@ -58,8 +54,6 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     public void registHandlerDefintion(Class<?> clz, IHandlerInvoke invoke) {
         IHandlerInvoke pre = handlerMap.put(clz, invoke);
 
-        /*System.out.println("put到handleMap中："+clz.getSimpleName()+" invoke:"+invoke.toString());
-        System.out.println("get handleMap :"+handlerMap);*/
         if(pre != null){
             throw new IllegalArgumentException("too much PolicyDefintion fro packet : "
             + clz.getSimpleName());

@@ -5,6 +5,7 @@ import com.game.login.packet.CM_Login;
 import com.game.scence.constant.SceneType;
 
 import com.game.scence.packet.CM_EnterMap;
+import com.game.utils.MD5Util;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class LoginServiceImpl implements ILoginService{
     @Override
     public void welcome(TSession session){
         while(true) {
-            System.out.println("欢迎进人到游戏世界,请输入指令进行 登录/注册/退出？(输入指令：login表示登录，esc表示退出游戏,register表示注册)");
+            System.out.println("欢迎进人到游戏世界,请输入指令进行 登录/注册/退出？(输入指令：login表示登录，esc表示退出游戏,register表示注册,relogin表示重新登录)");
             Scanner scanner = new Scanner(System.in);
             String code = scanner.next();
 
@@ -28,10 +29,13 @@ public class LoginServiceImpl implements ILoginService{
                 String username = scanner.next();
                 System.out.println("密码：");
                 String password = scanner.next();
+                String passwardDB = MD5Util.inputPassToFormPass(password);
                 CM_Login cm = new CM_Login();
                 cm.setUsername(username);
-                cm.setPassward(password);
+                cm.setPassward(passwardDB);
                 session.sendPacket(cm);
+                session.setAccountId(username);
+                session.setPassward(passwardDB);
                 return;
             } else if (code.trim().toLowerCase().equals("esc")) {
                 System.out.println("是否确认退出游戏？（yes/no）");
@@ -50,8 +54,21 @@ public class LoginServiceImpl implements ILoginService{
                 // 注册
                 SpringContext.getRegisterService().register(session);
                 return;
+            }else if(code.trim().toLowerCase().equals("relogin")){
+                String passward = session.getPassward();
+                String accountId = session.getAccountId();
+                if(passward!=null&& accountId!=null){
+                    CM_Login cm = new CM_Login();
+                    cm.setUsername(accountId);
+                    cm.setPassward(passward);
+                    session.sendPacket(cm);
+                    break;
+                }else{
+                    System.out.println("请重新登录");
+                }
             }else{
                 System.out.println("非法指令");
+
             }
 
         }
@@ -72,6 +89,9 @@ public class LoginServiceImpl implements ILoginService{
 
         }else if(status == 0){
             System.out.println("登录失败，密码错误请重新输入密码");
+            welcome(session);
+        }else if(status == -1){
+            System.out.println("有其他设备登录账号，请重新登录");
             welcome(session);
         }
     }

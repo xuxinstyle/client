@@ -65,7 +65,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
      *
      */
     private void SendConnectPack(ChannelHandlerContext ctx) {
-        logger.info("发了Connect了");
         MyPack myPack = new MyPack();
         myPack.setpId(2);
         CM_Connect cm = new CM_Connect();
