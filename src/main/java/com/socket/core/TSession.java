@@ -21,6 +21,7 @@ public class TSession {
 
     private String accountId;
     private String passward;
+    private long playerId;
     private final long createTime = System.currentTimeMillis();
     private final Channel channel;
     private final String ip;
@@ -103,5 +104,13 @@ public class TSession {
 
     public void setMapId(int mapId) {
         this.mapId = mapId;
+    }
+
+    public long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(long playerId) {
+        this.playerId = playerId;
     }
 }

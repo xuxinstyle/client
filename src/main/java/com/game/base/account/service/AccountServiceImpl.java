@@ -25,7 +25,7 @@ public class AccountServiceImpl implements AccountService {
         cm.setNickName(nickName);
         String career = "";
         while(true) {
-            System.out.println("请选择你要创建的职业：选择三种职业中的一种（战士:1 /法师:2 /道士:3）");
+            System.out.println("请选择你要创建的职业：选择三种职业中的一种（战士:1 /法师:2 /刺客:3）");
             career=scanner.next();
             if (Integer.parseInt(career) > 3 || Integer.parseInt(career) < 1) {
                 System.out.println("非法输入，请重新输入！");

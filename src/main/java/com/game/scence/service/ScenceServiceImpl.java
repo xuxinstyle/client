@@ -40,7 +40,7 @@ public class ScenceServiceImpl implements ScenceService{
                 CM_OnlinePlayerOperate cm = new CM_OnlinePlayerOperate();
                 cm.setMapId(sceneType);
                 session.sendPacket(cm);
-                //showMap(sceneType,scenceManager.getPostionMap(sceneType));
+
                 doOperate(session, 1);
                 break;
             case 2:
