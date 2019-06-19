@@ -46,4 +46,11 @@ public interface ScenceService {
      * @param scenePositions
      */
     void showMap(TSession session, String scenePositions);
+
+    /**
+     * 玩家的操作
+     * @param session
+     * @param mapId
+     */
+    void doOperate(TSession session, int mapId);
 }

@@ -32,6 +32,12 @@
             <artifactId>protostuff-runtime</artifactId>
             <version>1.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+         </dependency>
+
         <!-- netty的messagePack相关-->
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all   Netty 开发包-->
         <dependency>

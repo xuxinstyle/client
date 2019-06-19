@@ -1,5 +1,8 @@
 package com.socket.dispatcher.core;
 
+import com.game.SpringContext;
+import com.game.base.executor.common.command.PlayerUpLevelCommand;
+import com.game.role.player.packet.SM_PlayerUpLevel;
 import com.socket.core.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
@@ -32,11 +35,17 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
     @Override
     public void handle(TSession session, int opIndex, Object packet, long decodeTime) {
         //doHandle(session, opIndex, packet);
-        executor.addSessionTask(session ,new IoHandleEvent(this, session, opIndex, packet, decodeTime));
+        if(packet instanceof SM_PlayerUpLevel){
+            PlayerUpLevelCommand command = new PlayerUpLevelCommand();
+            command.setSession(session);
+            command.setOpIndex(opIndex);
+            command.setPack(packet);
+            SpringContext.getCommonExecutorService().submit(command);
+        }else {
+            executor.addSessionTask(session, new IoHandleEvent(this, session, opIndex, packet, decodeTime));
+        }
     }
-    public void doHandle(TSession session, int opIndex, Object packet) {
-
-
+    public static void doHandle(TSession session, int opIndex, Object packet) {
 
         IHandlerInvoke defintion = handlerMap.get(packet.getClass());
 

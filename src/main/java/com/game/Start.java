@@ -37,7 +37,8 @@ public class Start {
             new RegistSerializerMessage().init();
             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
             applicationContext.start();
-            connect("127.0.0.1", 8888);
+            SpringContext.getCommonExecutorService().init();
+            connect("127.0.0.1", 8889);
         }
 
         public void connect(String host, int port) {
@@ -67,7 +68,7 @@ public class Start {
 
                                 ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                                 ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
-                                ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(1024, 0, 2, 0, 2));
+                                ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                                 ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
                                 ch.pipeline().addLast(new EchoClientHandler());
                                 ch.pipeline().addLast(new HeartBeatTimerHandler());

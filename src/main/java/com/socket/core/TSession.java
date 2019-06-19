@@ -1,5 +1,6 @@
 package com.socket.core;
 
+import com.socket.Utils.JsonUtils.JsonUtils;
 import com.socket.Utils.ProtoStuffUtil;
 import com.socket.dispatcher.action.IActionDispatcher;
 import com.socket.dispatcher.config.RegistSerializerMessage;
@@ -60,13 +61,15 @@ public class TSession {
                     opIndex = entry.getKey();
                 }
             }
-            if(opIndex == 0){
-                logger.error("发送协议错误，没有对应的协议id");
+            if(opIndex <=0){
+
                 return;
             }
             MyPack pack = new MyPack();
             pack.setpId(opIndex);
-            pack.setPacket(ProtoStuffUtil.serializer(res));
+            pack.setPacket(JsonUtils.object2Bytes(res));
+            //pack.setPacket(ProtoStuffUtil.serializer(res));
+
             channel.writeAndFlush(pack);
         }catch (Exception e){
             String msg = String.format("encode %s error.",res != null ? res.getClass().getSimpleName():"null");

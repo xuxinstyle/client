@@ -1,22 +1,17 @@
 package com.socket.core;
 
 import com.game.connect.packet.CM_Connect;
-import com.socket.Utils.ProtoStuffUtil;
+import com.socket.Utils.JsonUtils.JsonUtils;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
-import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
 import com.socket.heartbeat.HeartBeatRequestPack;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import org.msgpack.MessagePack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     /**
@@ -65,13 +60,9 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
      *
      */
     private void SendConnectPack(ChannelHandlerContext ctx) {
-        MyPack myPack = new MyPack();
-        myPack.setpId(2);
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
         CM_Connect cm = new CM_Connect();
-        byte[] serializer = ProtoStuffUtil.serializer(cm);
-        myPack.setPacket(serializer);
-
-        ctx.writeAndFlush(myPack);
+        session.sendPacket(cm);
 
     }
 
@@ -80,10 +71,10 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
      * 当服务端返回应答消息时，channelRead 方法被调用，从 Netty 的 ByteBuf 中读取并打印应答消息
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, java.lang.Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //服务端消息传来的地方，在这个地方处理服务端传来的消息，并处理相关逻辑
-
-        List<Object> objects =(List<Object>)msg;
+        MyPack packet = (MyPack) msg;
+        /*List<Object> objects =(List<Object>)msg;
         if(objects.size()<=0){
             logger.error("错了错了，传来的包为空！");
             return;
@@ -92,12 +83,14 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         int opIndex = Integer.parseInt(object0);
         Object packet = objects.get(1);
         TSession session = SessionUtil.getChannelSession(ctx.channel());
-        Class<?> aClass = RegistSerializerMessage.idClassMap.get(opIndex);
-        byte[] unpack = MessagePack.unpack(MessagePack.pack(packet), byte[].class);
 
-        Object pack = ProtoStuffUtil.deserializer(unpack, aClass);
+        byte[] unpack = MessagePack.unpack(MessagePack.pack(packet), byte[].class);*/
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
+        Class<?> aClass = RegistSerializerMessage.idClassMap.get(packet.getpId());
+        Object pack = JsonUtils.bytes2Object(packet.getPacket(), aClass);
+        // Object pack = ProtoStuffUtil.deserializer(packet.getPacket(), aClass);
         //分发处理
-        actionDispatcher.handle(session,opIndex,pack,System.nanoTime());
+        actionDispatcher.handle(session,packet.getpId(),pack,System.nanoTime());
     }
 
     /**

@@ -1,10 +1,14 @@
 package com.game;
 
 import com.game.base.account.service.AccountService;
+import com.game.base.executor.common.CommonExecutorService;
 import com.game.connect.service.IConnectService;
 import com.game.login.service.ILoginService;
 import com.game.register.service.RegisterService;
+import com.game.role.player.service.PlayerService;
 import com.game.scence.service.ScenceService;
+import com.game.user.equip.service.EquipService;
+import com.game.user.item.service.ItemService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,15 +38,38 @@ public class SpringContext implements ApplicationContextAware {
     public ServerConfigValue serverConfigValue;
 
     @Autowired
-    public IConnectService connectService;
+    private IConnectService connectService;
     @Autowired
-    public ILoginService loginService;
+    private ILoginService loginService;
     @Autowired
-    public RegisterService registerService;
+    private RegisterService registerService;
     @Autowired
-    public AccountService accountService;
+    private AccountService accountService;
     @Autowired
-    public ScenceService scenceService;
+    private ScenceService scenceService;
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private EquipService equipService;
+    @Autowired
+    private PlayerService playerService;
+    @Autowired
+    private CommonExecutorService commonExecutorService;
+
+    public static CommonExecutorService getCommonExecutorService(){
+     return instance.commonExecutorService;
+    }
+    public static PlayerService getPlayerService(){
+        return instance.playerService;
+    }
+
+    public static EquipService getEquipService(){
+        return instance.equipService;
+    }
+
+    public static ItemService getItemService(){
+        return instance.itemService;
+    }
 
     public static ScenceService getScenceService(){
         return instance.scenceService;

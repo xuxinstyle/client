@@ -1,8 +1,14 @@
 package com.game.scence.service;
 
+import com.game.role.player.packet.CM_ShowAttribute;
 import com.game.scence.constant.SceneType;
 import com.game.scence.model.Position;
 import com.game.scence.packet.*;
+import com.game.user.equip.packet.CM_Equip;
+import com.game.user.equip.packet.CM_ShowEquipInfo;
+import com.game.user.equip.packet.CM_UnEquip;
+import com.game.user.item.packet.CM_AwardToPack;
+import com.game.user.item.packet.CM_ShowPackItem;
 import com.socket.core.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +65,8 @@ public class ScenceServiceImpl implements ScenceService{
 
     }
 
-
-    private void doOperate(TSession session, int mapId) {
+    @Override
+    public void doOperate(TSession session, int mapId) {
         while(true) {
             Scanner scanner = new Scanner(System.in);
             String operater = scanner.nextLine();
@@ -94,13 +100,51 @@ public class ScenceServiceImpl implements ScenceService{
                         cm.setMapId(mapId);
                         session.sendPacket(cm);
                         break;
+                    }else if("myself".equals(split[1].trim().toLowerCase())){
+                        CM_ShowAccountInfo cm = new CM_ShowAccountInfo();
+                        cm.setAccountId(session.getAccountId());
+                        session.sendPacket(cm);
+                        break;
+                    }else if("pack".equals(split[1].trim().toLowerCase())){
+                        CM_ShowPackItem cm = new CM_ShowPackItem();
+                        cm.setAccountId(session.getAccountId());
+                        session.sendPacket(cm);
+                        break;
+                    }else if("attribute".equals(split[1].trim().toLowerCase())){
+
+                        CM_ShowAttribute cm = new CM_ShowAttribute();
+                        cm.setAccountId(session.getAccountId());
+                        session.sendPacket(cm);
+                        break;
+                    }else if("equip".equals(split[1].trim().toLowerCase())){
+                        CM_ShowEquipInfo cm = new CM_ShowEquipInfo();
+                        cm.setAccountId(session.getAccountId());
+                        session.sendPacket(cm);
+                        break;
                     }else{
                         CM_ShowAccountInfo cm = new CM_ShowAccountInfo();
                         cm.setAccountId(split[1]);
                         session.sendPacket(cm);
                         break;
                     }
-                }else{
+                }else if("equip".equals(split[0].trim().toLowerCase())){
+                    long objectId = Long.parseLong(split[1].trim().toLowerCase());
+                    CM_Equip cm = new CM_Equip();
+                    cm.setAccountId(session.getAccountId());
+                    cm.setItemObjectId(objectId);
+                    session.sendPacket(cm);
+                    break;
+                }if("unequip".equals(split[0].trim().toLowerCase())){
+                    int position = Integer.parseInt(split[1].trim().toLowerCase());
+                    if(position<1||position>8){
+                        System.out.println("装备位置错误，请输入1-8的数字");
+                        continue;
+                    }
+                    CM_UnEquip cm = new CM_UnEquip();
+                    cm.setPosition(position);
+                    session.sendPacket(cm);
+                    break;
+                } else{
                     System.out.println("指令非法，请重新输入");
                 }
 
@@ -109,9 +153,19 @@ public class ScenceServiceImpl implements ScenceService{
                     int x = Integer.parseInt(split[1]);
                     int y = Integer.parseInt(split[2]);
                     CM_Move cm = new CM_Move();
+                    cm.setMapId(session.getMapId());
                     cm.setAccountId(session.getAccountId());
                     cm.setX(x);
                     cm.setY(y);
+                    session.sendPacket(cm);
+                    break;
+                }else if("add".equals(split[0].trim().toLowerCase())){
+                    int itemModelId = Integer.parseInt(split[1]);
+                    int num = Integer.parseInt(split[2]);
+                    CM_AwardToPack cm = new CM_AwardToPack();
+                    cm.setAccountId(session.getAccountId());
+                    cm.setItemModelId(itemModelId);
+                    cm.setNum(num);
                     session.sendPacket(cm);
                     break;
                 }else{
@@ -196,10 +250,10 @@ public class ScenceServiceImpl implements ScenceService{
             int y =position.getY();
             for(int i = 0;i<split.length;i++){
                 StringBuffer nowy = new StringBuffer();
-                if(y==(i+1)){
+                if(y==(i)){
                     String[] mapX = split[i].split(" ");
                     for (int j = 0;j<mapX.length;j++){
-                        if(j+1==x){
+                        if(j==x){
                             nowy.append("* ");
                         }else {
                             nowy.append(mapX[j] + " ");
