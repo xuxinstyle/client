@@ -34,6 +34,18 @@ public class EquipmentVO {
      * 增加的属性
      */
     private List<Attribute> attributeList;
+    /**
+     * 装备强化属性
+     */
+    private List<Attribute> strenAttributeList;
+
+    public List<Attribute> getStrenAttributeList() {
+        return strenAttributeList;
+    }
+
+    public void setStrenAttributeList(List<Attribute> strenAttributeList) {
+        this.strenAttributeList = strenAttributeList;
+    }
 
     public String getEquipName() {
         return equipName;

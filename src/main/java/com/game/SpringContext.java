@@ -8,7 +8,9 @@ import com.game.register.service.RegisterService;
 import com.game.role.player.service.PlayerService;
 import com.game.scence.service.ScenceService;
 import com.game.user.equip.service.EquipService;
+import com.game.user.equipupgrade.service.EquipUpgradeService;
 import com.game.user.item.service.ItemService;
+import com.game.user.strenequip.service.StrenEquipService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -55,10 +57,23 @@ public class SpringContext implements ApplicationContextAware {
     private PlayerService playerService;
     @Autowired
     private CommonExecutorService commonExecutorService;
+    @Autowired
+    private StrenEquipService strenEquipService;
+    @Autowired
+    private EquipUpgradeService equipUpgradeService;
+
+    public static EquipUpgradeService getEquipUpgradeService(){
+        return instance.equipUpgradeService;
+    }
+
+    public static StrenEquipService getStrenEquipService(){
+        return instance.strenEquipService;
+    }
 
     public static CommonExecutorService getCommonExecutorService(){
-     return instance.commonExecutorService;
+        return instance.commonExecutorService;
     }
+
     public static PlayerService getPlayerService(){
         return instance.playerService;
     }

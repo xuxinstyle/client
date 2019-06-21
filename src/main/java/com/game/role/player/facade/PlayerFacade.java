@@ -14,21 +14,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlayerFacade {
     @HandlerAnno
-    public void playerUpLevel(TSession session, SM_PlayerUpLevel sm){
-        try{
-            SpringContext.getPlayerService().playerUpLevel(sm.getStatus(),sm.getPlayerName(), sm.getLevel(),sm.getUpLevel() );
-        }catch (Exception e){
+    public void playerUpLevel(TSession session, SM_PlayerUpLevel sm) {
+        try {
+            SpringContext.getPlayerService().playerUpLevel(sm.getStatus(), sm.getPlayerName(), sm.getLevel(), sm.getUpLevel());
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("玩家升级失败");
         }
     }
+
     @HandlerAnno
-    public void playerUpLevel(TSession session, SM_ShowAttribute sm){
-        try{
-            SpringContext.getPlayerService().showAttribute(session,sm.getPlayerName(),sm.getFirstAttribute(),sm.getSecondAttribute());
-        }catch (Exception e){
+    public void showAttribute(TSession session, SM_ShowAttribute sm) {
+        try {
+            SpringContext.getPlayerService().showAttribute(session, sm.getPlayerName(),
+                    sm.getFirstAttributeList(), sm.getSecondAttributeList(), sm.getOtherAttributeList());
+        } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("查看角色["+sm.getPlayerName()+"]属性失败");
+            System.out.println("查看角色[" + sm.getPlayerName() + "]属性失败");
         }
     }
 }

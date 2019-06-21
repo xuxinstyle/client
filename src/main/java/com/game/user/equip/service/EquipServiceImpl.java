@@ -58,26 +58,33 @@ public class EquipServiceImpl  implements EquipService{
     @Override
     public void showEquipInfo(TSession session, long playerId, Map<Integer, EquipmentVO> positionEquipment, String playerName, int job) {
         System.out.println("角色唯一id ["+playerId+"] "+"角色名：["+playerName+"] "+"职业：["+Job.getJobNameByType(job)+"]");
-        for(Map.Entry<Integer, EquipmentVO> entry:positionEquipment.entrySet()){
-            EquipmentVO value = entry.getValue();
-            System.out.println("装备位置：["+EquipType.valueOf(entry.getKey()).getEquipName()+"]");
-            if(value.getEquipName()==null){
-                System.out.println("无装备");
+        for(EquipmentVO equipmentVO:positionEquipment.values()){
+
+            System.out.println("装备位置：["+EquipType.valueOf(equipmentVO.getPosition()).getEquipName()+"]");
+            if(equipmentVO.getEquipName()==null){
+                System.out.println("[无装备]");
                 continue;
             }
-
-            System.out.println("装备品质：[" + EquipQuality.valueOf(value.getQuality()).getQualityName()+"]");
-            System.out.println("装备名称：["+value.getEquipName()+"]");
-            System.out.println("职业限制：["+ Job.valueOf(value.getJob()).getJobName()+"]");
-            System.out.println("使用等级：["+value.getLevel()+"]");
-            System.out.println("属性：");
-            List<Attribute> attributeList = value.getAttributeList();
+            System.out.println("装备品质：[" + EquipQuality.valueOf(equipmentVO.getQuality()).getQualityName()+"]");
+            System.out.println("装备名称：["+equipmentVO.getEquipName()+"]");
+            System.out.println("职业限制：["+ Job.valueOf(equipmentVO.getJob()).getJobName()+"]");
+            System.out.println("强化等级：["+equipmentVO.getLevel()+"]");
+            System.out.println("[基础属性]：");
+            List<Attribute> attributeList = equipmentVO.getAttributeList();
             if(attributeList==null){
                 continue;
             }
             for(Attribute attribute :attributeList){
                 System.out.println(attribute.getAttributeType().getAttrName()+": "+attribute.getValue());
             }
+            List<Attribute> strenAttributeList = equipmentVO.getStrenAttributeList();
+            if(!strenAttributeList.isEmpty()){
+                System.out.println("[强化属性]：");
+                for(Attribute attribute :strenAttributeList){
+                    System.out.println(attribute.getAttributeType().getAttrName()+": "+attribute.getValue());
+                }
+            }
+            System.out.println("-------------------------");
         }
         SpringContext.getScenceService().doOperate(session,session.getMapId());
     }

@@ -7,8 +7,11 @@ import com.game.scence.packet.*;
 import com.game.user.equip.packet.CM_Equip;
 import com.game.user.equip.packet.CM_ShowEquipInfo;
 import com.game.user.equip.packet.CM_UnEquip;
+import com.game.user.equipupgrade.packet.CM_EquipUpgrade;
 import com.game.user.item.packet.CM_AwardToPack;
 import com.game.user.item.packet.CM_ShowPackItem;
+import com.game.user.strenequip.packet.CM_StrenEquip;
+import com.game.user.strenequip.packet.SM_StrenEquip;
 import com.socket.core.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,7 +137,7 @@ public class ScenceServiceImpl implements ScenceService{
                     cm.setItemObjectId(objectId);
                     session.sendPacket(cm);
                     break;
-                }if("unequip".equals(split[0].trim().toLowerCase())){
+                }else if("unequip".equals(split[0].trim().toLowerCase())){
                     int position = Integer.parseInt(split[1].trim().toLowerCase());
                     if(position<1||position>8){
                         System.out.println("装备位置错误，请输入1-8的数字");
@@ -144,7 +147,20 @@ public class ScenceServiceImpl implements ScenceService{
                     cm.setPosition(position);
                     session.sendPacket(cm);
                     break;
-                } else{
+                } else if("stren".equals(split[0].trim().toLowerCase())){
+                    long itemObjectId = Long.parseLong(split[1].trim().toLowerCase());
+                    CM_StrenEquip cm = new CM_StrenEquip();
+                    cm.setAccountId(session.getAccountId());
+                    cm.setItemObjectId(itemObjectId);
+                    session.sendPacket(cm);
+                    break;
+                } else if("upgrade".equals(split[0].trim().toLowerCase())){
+                    long itemObjectId = Long.parseLong(split[1].trim().toLowerCase());
+                    CM_EquipUpgrade cm = new CM_EquipUpgrade();
+                    cm.setEquipObjectId(itemObjectId);
+                    session.sendPacket(cm);
+                    break;
+                }else {
                     System.out.println("指令非法，请重新输入");
                 }
 
