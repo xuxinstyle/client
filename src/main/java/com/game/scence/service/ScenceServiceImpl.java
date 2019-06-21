@@ -10,6 +10,7 @@ import com.game.user.equip.packet.CM_UnEquip;
 import com.game.user.equipupgrade.packet.CM_EquipUpgrade;
 import com.game.user.item.packet.CM_AwardToPack;
 import com.game.user.item.packet.CM_ShowPackItem;
+import com.game.user.item.packet.CM_UseItem;
 import com.game.user.strenequip.packet.CM_StrenEquip;
 import com.game.user.strenequip.packet.SM_StrenEquip;
 import com.socket.core.TSession;
@@ -160,7 +161,14 @@ public class ScenceServiceImpl implements ScenceService{
                     cm.setEquipObjectId(itemObjectId);
                     session.sendPacket(cm);
                     break;
-                }else {
+                }else if("use".equals(split[0].trim().toLowerCase())){
+                    long itemObjectId = Long.parseLong(split[1].trim().toLowerCase());
+                    CM_UseItem cm = new CM_UseItem();
+                    cm.setNum(1);
+                    cm.setItemObjectId(itemObjectId);
+                    session.sendPacket(cm);
+                    break;
+                }else{
                     System.out.println("指令非法，请重新输入");
                 }
 
@@ -184,7 +192,36 @@ public class ScenceServiceImpl implements ScenceService{
                     cm.setNum(num);
                     session.sendPacket(cm);
                     break;
-                }else{
+                }else if("use".equals(split[0].trim().toLowerCase())){
+                    long itemObjectId = Long.parseLong(split[1].trim().toLowerCase());
+                    int num = Integer.parseInt(split[2].trim().toLowerCase());
+                    CM_UseItem cm = new CM_UseItem();
+                    cm.setNum(num);
+                    cm.setItemObjectId(itemObjectId);
+                    session.sendPacket(cm);
+                    break;
+                }else if("show".equals(split[0].trim().toLowerCase())){
+                    if("attribute".equals(split[1].trim().toLowerCase())){
+                        CM_ShowAttribute cm = new CM_ShowAttribute();
+                        cm.setAccountId(split[2].trim().toLowerCase());
+                        session.sendPacket(cm);
+                        break;
+                    }else if("equip".equals(split[1].trim().toLowerCase())){
+                        CM_ShowEquipInfo cm = new CM_ShowEquipInfo();
+                        cm.setAccountId(split[2].trim().toLowerCase());
+                        session.sendPacket(cm);
+                        break;
+                    }else if("item".equals(split[1].trim().toLowerCase())){
+                        /*CM_ShowEquipInfo cm = new CM_ShowEquipInfo();
+                        cm.setAccountId(split[2].trim().toLowerCase());
+                        session.sendPacket(cm);
+                        break;*/
+                        System.out.println("功能待添加。。。。");
+                    }else{
+                        System.out.println("指令非法，请重新输入");
+                    }
+
+                }else {
                     System.out.println("指令非法，请重新输入");
                 }
             }else{

@@ -21,4 +21,18 @@ public interface ItemService {
      * @param status
      */
     void AwardToPack(TSession session, int status);
+
+    /**
+     * 使用道具
+     * @param session
+     * @param status
+     * @param effectiveTime
+     */
+    void useItem(TSession session, int status, long effectiveTime);
+
+    /**
+     * 道具失效
+     * @param itemName
+     */
+    void effectEnd(String itemName);
 }

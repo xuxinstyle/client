@@ -1,9 +1,7 @@
 package com.game.user.item.facade;
 
 import com.game.SpringContext;
-import com.game.user.item.packet.CM_ShowPackItem;
-import com.game.user.item.packet.SM_AwardToPack;
-import com.game.user.item.packet.SM_ShowPackItem;
+import com.game.user.item.packet.*;
 import com.socket.core.TSession;
 import com.socket.dispatcher.anno.HandlerAnno;
 import org.slf4j.Logger;
@@ -23,16 +21,35 @@ public class ItemFacade {
             SpringContext.getItemService().showItems(session,sm.getItemList(), sm.getSize(),sm.getUseSize());
         }catch (Exception e){
             e.printStackTrace();
-            logger.error("查看玩家{}信息失败", session.getAccountId());
+            System.out.println("查看背包失败");
         }
     }
     @HandlerAnno
-    public void showPack(TSession session, SM_AwardToPack sm){
+    public void awardToPack(TSession session, SM_AwardToPack sm){
         try{
             SpringContext.getItemService().AwardToPack(session,sm.getStatus());
         }catch (Exception e){
             e.printStackTrace();
-            logger.error("查看玩家{}信息失败", session.getAccountId());
+            System.out.println("发奖失败");
+        }
+    }
+    @HandlerAnno
+    public void useItem(TSession session, SM_UseItem sm){
+        try {
+            SpringContext.getItemService().useItem(session, sm.getStatus(),sm.getEffectiveTime());
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("道具使用失败");
+        }
+    }
+
+    @HandlerAnno
+    public void effectEnd(TSession session, SM_EffectEnd sm){
+        try{
+            SpringContext.getItemService().effectEnd(sm.getItemName());
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("道具失效错误");
         }
     }
 }

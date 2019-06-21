@@ -26,8 +26,9 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public void showAttribute(TSession session, String playerName, List<Attribute> firstAttribute, List<Attribute> secondAttribute,List<Attribute> otherAttributeList ) {
-        System.out.println("角色名：["+playerName+"]");
+    public void showAttribute(TSession session, String playerName, List<Attribute> firstAttribute,
+                              List<Attribute> secondAttribute,List<Attribute> otherAttributeList ,int playerLevel) {
+        System.out.println("角色名：["+playerName+"]  等级:["+playerLevel+"]");
 
         System.out.println("-----------二级属性：-----------");
         for (Attribute attribute:secondAttribute){

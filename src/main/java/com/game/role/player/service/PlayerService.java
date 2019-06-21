@@ -21,6 +21,6 @@ public interface PlayerService {
      * @param secondAttribute
      */
     void showAttribute(TSession session, String playerName, List<Attribute> firstAttribute,
-                       List<Attribute> secondAttribute, List<Attribute> otherAttributeList);
+                       List<Attribute> secondAttribute, List<Attribute> otherAttributeList,int playerLevel);
 
 }

@@ -60,7 +60,7 @@ public class EquipServiceImpl  implements EquipService{
         System.out.println("角色唯一id ["+playerId+"] "+"角色名：["+playerName+"] "+"职业：["+Job.getJobNameByType(job)+"]");
         for(EquipmentVO equipmentVO:positionEquipment.values()){
 
-            System.out.println("装备位置：["+EquipType.valueOf(equipmentVO.getPosition()).getEquipName()+"]");
+            System.out.println("装备位置：["+equipmentVO.getPosition()+"]["+EquipType.valueOf(equipmentVO.getPosition()).getEquipName()+"]");
             if(equipmentVO.getEquipName()==null){
                 System.out.println("[无装备]");
                 continue;

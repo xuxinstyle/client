@@ -27,7 +27,7 @@ public class PlayerFacade {
     public void showAttribute(TSession session, SM_ShowAttribute sm) {
         try {
             SpringContext.getPlayerService().showAttribute(session, sm.getPlayerName(),
-                    sm.getFirstAttributeList(), sm.getSecondAttributeList(), sm.getOtherAttributeList());
+                    sm.getFirstAttributeList(), sm.getSecondAttributeList(), sm.getOtherAttributeList(),sm.getPlayerLevel());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("查看角色[" + sm.getPlayerName() + "]属性失败");

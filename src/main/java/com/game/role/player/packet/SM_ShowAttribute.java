@@ -9,6 +9,13 @@ import java.util.List;
  * @Date: 2019/6/17 11:42
  */
 public class SM_ShowAttribute {
+    /**
+     * 角色等级
+     */
+    private int playerLevel;
+    /**
+     * 角色名
+     */
     private String playerName;
     /**
      * 一级属性
@@ -23,9 +30,19 @@ public class SM_ShowAttribute {
      */
     private List<Attribute> otherAttributeList;
 
+
+    public int getPlayerLevel() {
+        return playerLevel;
+    }
+
+    public void setPlayerLevel(int playerLevel) {
+        this.playerLevel = playerLevel;
+    }
+
     public List<Attribute> getOtherAttributeList() {
         return otherAttributeList;
     }
+
 
     public void setOtherAttributeList(List<Attribute> otherAttributeList) {
         this.otherAttributeList = otherAttributeList;
