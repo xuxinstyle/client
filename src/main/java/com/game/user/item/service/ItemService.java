@@ -1,5 +1,6 @@
 package com.game.user.item.service;
 
+import com.game.user.item.packet.SM_ShowItemInfo;
 import com.game.user.item.packet.bean.ItemVO;
 import com.socket.core.TSession;
 
@@ -35,4 +36,11 @@ public interface ItemService {
      * @param itemName
      */
     void effectEnd(String itemName);
+
+    /**
+     * 查看道具详细信息
+     * @param session
+     * @param sm
+     */
+    void showItemInfo(TSession session, SM_ShowItemInfo sm);
 }

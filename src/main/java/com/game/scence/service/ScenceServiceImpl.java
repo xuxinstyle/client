@@ -9,6 +9,7 @@ import com.game.user.equip.packet.CM_ShowEquipInfo;
 import com.game.user.equip.packet.CM_UnEquip;
 import com.game.user.equipupgrade.packet.CM_EquipUpgrade;
 import com.game.user.item.packet.CM_AwardToPack;
+import com.game.user.item.packet.CM_ShowItemInfo;
 import com.game.user.item.packet.CM_ShowPackItem;
 import com.game.user.item.packet.CM_UseItem;
 import com.game.user.strenequip.packet.CM_StrenEquip;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @Author：xuxin
@@ -71,8 +74,8 @@ public class ScenceServiceImpl implements ScenceService{
 
     @Override
     public void doOperate(TSession session, int mapId) {
+        Scanner scanner = new Scanner(System.in);
         while(true) {
-            Scanner scanner = new Scanner(System.in);
             String operater = scanner.nextLine();
             if("esc".equals(operater.trim().toLowerCase())){
                 session.getChannel().close();
@@ -216,12 +219,27 @@ public class ScenceServiceImpl implements ScenceService{
                         cm.setAccountId(split[2].trim().toLowerCase());
                         session.sendPacket(cm);
                         break;*/
-                        System.out.println("功能待添加。。。。");
+                        if(!isNumeric(split[2].trim().toLowerCase())){
+                            System.out.println("输入非法，请输入数字");
+                            continue;
+                        }
+                        CM_ShowItemInfo cm = new CM_ShowItemInfo();
+                        cm.setAccountId(session.getAccountId());
+                        cm.setItemObjectId(Long.parseLong(split[2].trim().toLowerCase()));
+                        session.sendPacket(cm);
+                        //System.out.println("功能待开发。。。。");
                     }else{
                         System.out.println("指令非法，请重新输入");
                     }
 
-                }else {
+                }else if("stren".equals(split[0].trim().toLowerCase())){
+                    if(!isNumeric(split[1].trim().toLowerCase())&&isNumeric(split[2].trim().toLowerCase())){
+                        System.out.println("输入非法，请输入数字");
+                        continue;
+                    }
+                    System.out.println("功能待开发。。。。");
+                    break;
+                }else{
                     System.out.println("指令非法，请重新输入");
                 }
             }else{
@@ -229,7 +247,14 @@ public class ScenceServiceImpl implements ScenceService{
             }
         }
     }
-
+    public boolean isNumeric(String str){
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if( !isNum.matches() ){
+            return false;
+        }
+        return true;
+    }
     @Override
     public void showAllAccount(TSession session, String context) {
         String[] split = context.split("#");

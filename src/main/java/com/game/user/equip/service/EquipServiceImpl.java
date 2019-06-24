@@ -68,7 +68,7 @@ public class EquipServiceImpl  implements EquipService{
             System.out.println("装备品质：[" + EquipQuality.valueOf(equipmentVO.getQuality()).getQualityName()+"]");
             System.out.println("装备名称：["+equipmentVO.getEquipName()+"]");
             System.out.println("职业限制：["+ Job.valueOf(equipmentVO.getJob()).getJobName()+"]");
-            System.out.println("强化等级：["+equipmentVO.getLevel()+"]");
+            System.out.println("强化次数：[+"+equipmentVO.getLevel()+"]");
             System.out.println("[基础属性]：");
             List<Attribute> attributeList = equipmentVO.getAttributeList();
             if(attributeList==null){

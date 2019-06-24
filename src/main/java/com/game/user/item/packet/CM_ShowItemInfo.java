@@ -1,20 +1,18 @@
-package com.game.user.strenequip.packet;
+package com.game.user.item.packet;
 
 /**
  * @Author：xuxin
- * @Date: 2019/6/20 9:08
+ * @Date: 2019/6/24 16:40
  */
-public class CM_StrenEquip {
+public class CM_ShowItemInfo {
     /**
      * 道具唯一id
      */
     private long itemObjectId;
     /**
-     * 玩家账号id
+     * 玩家id
      */
     private String accountId;
-
-
 
     public long getItemObjectId() {
         return itemObjectId;

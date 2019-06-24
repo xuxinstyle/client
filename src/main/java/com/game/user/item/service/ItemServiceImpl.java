@@ -1,6 +1,13 @@
 package com.game.user.item.service;
 
 import com.game.SpringContext;
+import com.game.base.attribute.Attribute;
+import com.game.base.attribute.constant.AttributeType;
+import com.game.role.constant.Job;
+import com.game.user.equip.constant.EquipQuality;
+import com.game.user.equip.constant.EquipType;
+import com.game.user.item.constant.ItemType;
+import com.game.user.item.packet.SM_ShowItemInfo;
 import com.game.user.item.packet.bean.ItemVO;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
@@ -65,5 +72,36 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void effectEnd(String itemName) {
         System.out.println("道具["+itemName+"]失效");
+    }
+
+    @Override
+    public void showItemInfo(TSession session, SM_ShowItemInfo sm) {
+        if(sm.getStatus()==2){
+            System.out.println("没有该道具");
+        }
+        System.out.println("唯一id：["+sm.getItemObjectId()+"] 道具名：["+sm.getItemName()+"]  数量：["+sm.getNum()+"]");
+        if(sm.getItemType()==ItemType.EQUIPMENT.getId()){
+            System.out.println("装备位置：["+EquipType.valueOf(sm.getEquipType()).getEquipName()+"]");
+            System.out.println("装备品质：[" + EquipQuality.valueOf(sm.getEquipQuality()).getQualityName()+"]");
+            System.out.println("强化次数：[+"+sm.getStrenNum()+"]");
+            System.out.println("职业限制：["+Job.valueOf(sm.getJobType()).getJobName()+"]");
+            System.out.println("穿戴等级：["+sm.getLimitLevel()+"]");
+            System.out.println("[基础属性]：");
+            List<Attribute> baseAttributeList = sm.getBaseAttributeList();
+            for (Attribute attribute : baseAttributeList){
+                System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
+            }
+
+            List<Attribute> strenAttributeList = sm.getStrenAttributeList();
+            if(strenAttributeList!=null&&!strenAttributeList.isEmpty()){
+                System.out.println("[强化属性]：");
+                for (Attribute attribute : strenAttributeList){
+                    System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
+                }
+            }
+        }else if(sm.getItemType() == ItemType.CONSUME_STONE.getId()){
+            System.out.println("用于提升装备品质装备强化或升级的宝石");
+        }
+
     }
 }

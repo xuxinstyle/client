@@ -14,6 +14,8 @@ public class SM_StrenEquip {
      */
     private String itemName;
 
+
+
     public String getItemName() {
         return itemName;
     }

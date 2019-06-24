@@ -52,4 +52,14 @@ public class ItemFacade {
             System.out.println("道具失效错误");
         }
     }
+
+    @HandlerAnno
+    public void showItemInfo(TSession session, SM_ShowItemInfo sm){
+        try{
+            SpringContext.getItemService().showItemInfo(session,sm);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("查看道具信息失败");
+        }
+    }
 }

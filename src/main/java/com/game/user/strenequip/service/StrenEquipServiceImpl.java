@@ -13,7 +13,7 @@ public class StrenEquipServiceImpl implements StrenEquipService {
     @Override
     public void strenEquip(TSession session, int status, String itemName) {
         if(status==1){
-            System.out.println("道具["+itemName+"]强化成功！");
+            System.out.println("道具["+itemName+"]强化次数+1");
             SpringContext.getScenceService().doOperate(session,session.getMapId());
         }else if(status == 2){
             System.out.println("强化失败，背包中没有该道具！");
@@ -22,7 +22,7 @@ public class StrenEquipServiceImpl implements StrenEquipService {
             System.out.println("强化失败，道具不足！");
             SpringContext.getScenceService().doOperate(session,session.getMapId());
         }else if(status == 4){
-            System.out.println("道具"+itemName+"无法强化！");
+            System.out.println("道具["+itemName+"]无法强化！");
             SpringContext.getScenceService().doOperate(session,session.getMapId());
         }else if(status == 5){
             System.out.println("达到强化上限!");
