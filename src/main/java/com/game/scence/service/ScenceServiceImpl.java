@@ -2,8 +2,9 @@ package com.game.scence.service;
 
 import com.game.role.player.packet.CM_ShowAttribute;
 import com.game.scence.constant.SceneType;
-import com.game.scence.model.Position;
+import com.game.scence.model.PlayerPosition;
 import com.game.scence.packet.*;
+import com.game.scence.packet.bean.PlayerVO;
 import com.game.user.equip.packet.CM_Equip;
 import com.game.user.equip.packet.CM_ShowEquipInfo;
 import com.game.user.equip.packet.CM_UnEquip;
@@ -13,7 +14,6 @@ import com.game.user.item.packet.CM_ShowItemInfo;
 import com.game.user.item.packet.CM_ShowPackItem;
 import com.game.user.item.packet.CM_UseItem;
 import com.game.user.strenequip.packet.CM_StrenEquip;
-import com.game.user.strenequip.packet.SM_StrenEquip;
 import com.socket.core.TSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +33,18 @@ public class ScenceServiceImpl implements ScenceService{
     private static final Logger logger = LoggerFactory.getLogger(ScenceServiceImpl.class);
     @Autowired
     private ScenceManager scenceManager;
+
     @Override
-    public void enterMap(TSession session, String accountId, String context,String strPosition, int sceneType,int x,int y) {
-        String mapContext = scenceManager.getContext(sceneType);
-        if(mapContext==null){
-            scenceManager.put(sceneType, context);
-        }
+    public void init() {
+        scenceManager.init();
+    }
+
+    @Override
+    public void enterMap(TSession session, String accountId,  int sceneType, PlayerPosition position) {
         switch (sceneType){
             case 1:
                 session.setMapId(sceneType);
-                scenceManager.setAccountIdsMap(sceneType, accountId, strPosition);
+                scenceManager.setAccountIdsMap(sceneType, accountId, position);
                 System.out.println("欢迎进入:新手村");
                 CM_OnlinePlayerOperate cm = new CM_OnlinePlayerOperate();
                 cm.setMapId(sceneType);
@@ -52,7 +54,7 @@ public class ScenceServiceImpl implements ScenceService{
                 break;
             case 2:
                 session.setMapId(sceneType);
-                scenceManager.setAccountIdsMap(sceneType, accountId, strPosition);
+                scenceManager.setAccountIdsMap(sceneType, accountId, position);
                 System.out.println("欢迎进入:野外");
                 CM_OnlinePlayerOperate cm1  = new CM_OnlinePlayerOperate();
                 cm1.setMapId(sceneType);
@@ -61,16 +63,17 @@ public class ScenceServiceImpl implements ScenceService{
 
                 doOperate(session, 2);
                 break;
-                default :
-                    System.out.println("进入地图失败，没有该地图信息,请重新输入指令");
-                    if(session.getMapId()==0){
-                        doOperate(session, 1);
-                    }else{
-                        doOperate(session, session.getMapId());
-                    }
+            default :
+                System.out.println("进入地图失败，没有该地图信息,请重新输入指令");
+                if(session.getMapId()==0){
+                    doOperate(session, 1);
+                }else{
+                    doOperate(session, session.getMapId());
+                }
         }
 
     }
+
 
     @Override
     public void doOperate(TSession session, int mapId) {
@@ -182,8 +185,7 @@ public class ScenceServiceImpl implements ScenceService{
                     CM_Move cm = new CM_Move();
                     cm.setMapId(session.getMapId());
                     cm.setAccountId(session.getAccountId());
-                    cm.setX(x);
-                    cm.setY(y);
+                    cm.setTargetPos(PlayerPosition.valueOf(x,y));
                     session.sendPacket(cm);
                     break;
                 }else if("add".equals(split[0].trim().toLowerCase())){
@@ -256,10 +258,16 @@ public class ScenceServiceImpl implements ScenceService{
         return true;
     }
     @Override
-    public void showAllAccount(TSession session, String context) {
-        String[] split = context.split("#");
-        for (String str:split){
-            System.out.println(str);
+    public void showAllAccount(TSession session, List<PlayerVO> playerVOList) {
+        for(PlayerVO playerVO:playerVOList){
+            StringBuffer strbuf = new StringBuffer();
+            strbuf.append("账号id：["+playerVO.getAccountId()+"] ");
+            strbuf.append("昵称：["+playerVO.getNickName()+"] ");
+            strbuf.append("角色名：["+playerVO.getPlayerName()+"] ");
+            strbuf.append("职业：["+playerVO.getJobType()+"] ");
+            strbuf.append("等级：["+playerVO.getLevel()+"] ");
+            strbuf.append("位置：["+playerVO.getPosition().getX()+", "+playerVO.getPosition().getY()+"]");
+            System.out.println(strbuf.toString());
         }
         doOperate(session, session.getMapId());
     }
@@ -276,7 +284,7 @@ public class ScenceServiceImpl implements ScenceService{
             str.append("角色名：["+sm.getPlayerName()+"] ");
             str.append("职业：[" + sm.getCareer()+"] " );
             str.append("等级：[" + sm.getLevel()+"] ");
-            str.append("位置：["+sm.getX()+","+sm.getY()+"] ");
+            str.append("位置：["+sm.getPosition().getX()+","+sm.getPosition().getY()+"] ");
             System.out.println(str.toString());
             doOperate(session, session.getMapId());
         }
@@ -285,11 +293,10 @@ public class ScenceServiceImpl implements ScenceService{
     @Override
     public void move(TSession session, SM_Move sm) {
         if(sm.getStatus()==1){
-            scenceManager.setAccountIdsMap(session.getMapId(),session.getAccountId(), sm.getX(),sm.getY());
+            scenceManager.setAccountIdsMap(session.getMapId(),session.getAccountId(), sm.getPosition().getX(),sm.getPosition().getY());
             CM_OnlinePlayerOperate cm = new CM_OnlinePlayerOperate();
             cm.setMapId(session.getMapId());
             session.sendPacket(cm);
-            //showMap(session.getMapId(),scenceManager.getPostionMap(session.getMapId()));
             doOperate(session, session.getMapId());
         }else {
             System.out.println("移动失败，该位置有阻挡点，不能移动");
@@ -298,55 +305,42 @@ public class ScenceServiceImpl implements ScenceService{
     }
 
     @Override
-    public void showMap(TSession session, String scenePositions) {
+    public void showMap(TSession session, List<PlayerPosition> playerPositionList) {
 
-        List<Position> list = doParsePosition(scenePositions);
-        showMap(session.getMapId(), list);
+        showMap(session.getMapId(), playerPositionList);
+        //doOperate(session, session.getMapId());
     }
 
-    private List<Position> doParsePosition(String scenePositions) {
-        List<Position> list = new ArrayList<>();
-        String[] positions = scenePositions.split(":");
-        for(String str:positions){
-            String[] split = str.split(",");
-            if(split.length!=2){
-                return null;
-            }
-            Position position = new Position(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
-            list.add(position);
-        }
-        return list;
-    }
-
-    private void showMap(int mapId,List<Position> map) {
-        String context = scenceManager.getContext(mapId);
-        String[] split = context.split(",");
-
-        String[] nowPosion = split;
-        for(Position position: map){
-            int x= position.getX();
-            int y =position.getY();
-            for(int i = 0;i<split.length;i++){
-                StringBuffer nowy = new StringBuffer();
-                if(y==(i)){
-                    String[] mapX = split[i].split(" ");
-                    for (int j = 0;j<mapX.length;j++){
-                        if(j==x){
-                            nowy.append("* ");
-                        }else {
-                            nowy.append(mapX[j] + " ");
-                        }
-                    }
-                    nowPosion[i] = nowy.toString();
-                }else{
-                    nowPosion[i] = split[i];
-                }
-            }
+    // 地图中 0 为空地， 1 为障碍 2 为玩家
+    private void showMap(int mapId,List<PlayerPosition> map) {
+        int[][] context = scenceManager.getContext(mapId);
+        int[][] playerMap = copy(context);
+        for(PlayerPosition playerPosition : map){
+            int x= playerPosition.getX();
+            int y = playerPosition.getY();
+            playerMap[x][y] = 2;
         }
         System.out.println("地图："+SceneType.valueOf(mapId).getTypeName());
-        for (int i = nowPosion.length-1;i>=0;i--){
-            System.out.println(nowPosion[i]);
+        for(int x =playerMap.length-1; x>=0; x--){
+            for(int y = 0;y<playerMap[0].length;y++){
+                if(playerMap[x][y] == 2){
+                    System.out.print("* ");
+                }else{
+                    System.out.print(playerMap[x][y]+" ");
+                }
+            }
+            System.out.println();
         }
+    }
+
+    private int[][] copy(int[][] context) {
+        int[][] playerMap = new int[context.length][context[0].length];
+        for (int i = 0;i<playerMap.length;i++){
+            for (int j = 0;j<playerMap[0].length;j++){
+                playerMap[i][j] = context[i][j];
+            }
+        }
+        return playerMap;
     }
 
 }

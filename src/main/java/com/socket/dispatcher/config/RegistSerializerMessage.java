@@ -17,7 +17,7 @@ import java.util.Map;
 public class RegistSerializerMessage {
     private static final String location = "src/main/resources/message.xml";
     //private static final String location = "classes/message.xml";
-    public static final Map<Integer, Class<?>> idClassMap = new HashMap<Integer, Class<?>>();
+    public static final Map<Integer, Class<?>> ID_CLASS_MAP = new HashMap<Integer, Class<?>>();
 
     /**
      * 注册协议
@@ -36,10 +36,10 @@ public class RegistSerializerMessage {
                 String svalue = name.getAttributes().getNamedItem("value").getNodeValue().toString();
                 int id = Integer.parseInt(sid);
                 Class<?> clz = Class.forName(svalue);
-                if(idClassMap.containsKey(id)){
+                if(ID_CLASS_MAP.containsKey(id)){
                     throw new IllegalArgumentException("协议id：["+id+"] 重复了！");
                 }
-                idClassMap.put(id, clz);
+                ID_CLASS_MAP.put(id, clz);
             }
         }  catch (Exception e) {
             e.printStackTrace();

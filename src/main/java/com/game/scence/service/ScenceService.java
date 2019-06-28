@@ -1,10 +1,12 @@
 package com.game.scence.service;
 
+import com.game.scence.model.PlayerPosition;
 import com.game.scence.packet.SM_Move;
 import com.game.scence.packet.SM_ShowAccountInfo;
+import com.game.scence.packet.bean.PlayerVO;
 import com.socket.core.TSession;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @Author：xuxin
@@ -17,14 +19,14 @@ public interface ScenceService {
      * @param accountId
      * @param sceneType
      */
-    void enterMap(TSession session, String accountId, String context,String strPosition ,int sceneType,int x,int y);
+    void enterMap(TSession session, String accountId,int sceneType,PlayerPosition position);
 
     /**
      * 查看当前地图的所有玩家
      * @param session
-     * @param context
+     * @param playerVOList
      */
-    void showAllAccount(TSession session, String context);
+    void showAllAccount(TSession session, List<PlayerVO> playerVOList);
 
     /**
      * 查看指定玩家详细信息
@@ -43,9 +45,9 @@ public interface ScenceService {
     /**
      * 显示地图
      * @param session
-     * @param scenePositions
+     * @param playerPositionList
      */
-    void showMap(TSession session, String scenePositions);
+    void showMap(TSession session, List<PlayerPosition> playerPositionList);
 
     /**
      * 玩家的操作
@@ -53,4 +55,9 @@ public interface ScenceService {
      * @param mapId
      */
     void doOperate(TSession session, int mapId);
+
+    /**
+     * 初始化场景信息
+     */
+    void init();
 }

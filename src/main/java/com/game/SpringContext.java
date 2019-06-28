@@ -11,6 +11,7 @@ import com.game.user.equip.service.EquipService;
 import com.game.user.equipupgrade.service.EquipUpgradeService;
 import com.game.user.item.service.ItemService;
 import com.game.user.strenequip.service.StrenEquipService;
+import com.resource.core.StorageManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

@@ -30,7 +30,7 @@ public class PlayerServiceImpl implements PlayerService {
                               List<Attribute> secondAttribute,List<Attribute> otherAttributeList ,int playerLevel) {
         System.out.println("角色名：["+playerName+"]  等级:["+playerLevel+"]");
 
-        System.out.println("-----------二级属性：-----------");
+        System.out.println("-----------基础属性：-----------");
         for (Attribute attribute:secondAttribute){
             System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
         }
@@ -38,9 +38,11 @@ public class PlayerServiceImpl implements PlayerService {
         for (Attribute attribute:firstAttribute){
             System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
         }
-        System.out.println("-----------其他属性:------------");
-        for (Attribute attribute:otherAttributeList){
-            System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
+        if(otherAttributeList!=null) {
+            System.out.println("-----------其他属性:------------");
+            for (Attribute attribute : otherAttributeList) {
+                System.out.println(attribute.getAttributeType().getAttrName() + "：" + attribute.getValue());
+            }
         }
         SpringContext.getScenceService().doOperate(session,session.getMapId());
     }

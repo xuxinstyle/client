@@ -2,22 +2,25 @@ package com.socket.core;
 
 import org.msgpack.annotation.Message;
 
+import java.util.Arrays;
+
 @Message
 public class MyPack {
     /**
      * 协议Id
      */
-    private Integer pId;
+    private int pId;
     /**
      * 自己的协议包
      */
+
     private byte[] packet;
 
-    public Integer getpId() {
+    public int getpId() {
         return pId;
     }
 
-    public void setpId(Integer pId) {
+    public void setpId(int pId) {
         this.pId = pId;
     }
 
@@ -33,7 +36,7 @@ public class MyPack {
     public String toString() {
         return "MyPack{" +
                 "pId=" + pId +
-                ", packet=" + packet +
+                ", packet=" + Arrays.toString(packet) +
                 '}';
     }
 }

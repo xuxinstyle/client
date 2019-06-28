@@ -101,6 +101,8 @@ public class ItemServiceImpl implements ItemService {
             }
         }else if(sm.getItemType() == ItemType.CONSUME_STONE.getId()){
             System.out.println("用于提升装备品质装备强化或升级的宝石");
+        }else{
+            System.out.println("用于提升装备品质装备强化或升级的宝石");
         }
 
     }

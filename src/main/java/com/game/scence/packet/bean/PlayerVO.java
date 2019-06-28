@@ -1,38 +1,34 @@
-package com.game.scence.packet;
+package com.game.scence.packet.bean;
 
 import com.game.scence.model.PlayerPosition;
 
 /**
  * @Author：xuxin
- * @Date: 2019/6/6 10:11
+ * @Date: 2019/6/25 14:05
  */
-public class SM_ShowAccountInfo {
-
+public class PlayerVO {
     /**
-     * 账号Id
+     * 账号id
      */
     private String accountId;
     /**
-     * 账号昵称
+     * 昵称
      */
     private String nickName;
-    /**
-     * 职业
-     */
-    private String career;
-    /**
-     * 等级
-     */
-    private int level;
-
     /**
      * 角色名
      */
     private String playerName;
-
     /**
-     * 位置
-     *
+     * 职业
+     */
+    private int jobType;
+    /**
+     * 等级
+     */
+    private int level;
+    /**
+     * 玩家位置
      */
     private PlayerPosition position;
 
@@ -44,12 +40,12 @@ public class SM_ShowAccountInfo {
         this.position = position;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getNickName() {
@@ -60,12 +56,20 @@ public class SM_ShowAccountInfo {
         this.nickName = nickName;
     }
 
-    public String getCareer() {
-        return career;
+    public String getPlayerName() {
+        return playerName;
     }
 
-    public void setCareer(String career) {
-        this.career = career;
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public int getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(int jobType) {
+        this.jobType = jobType;
     }
 
     public int getLevel() {
@@ -76,11 +80,4 @@ public class SM_ShowAccountInfo {
         this.level = level;
     }
 
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
 }

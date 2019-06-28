@@ -1,11 +1,10 @@
 package com.game;
 
 
-import com.socket.core.EchoClientHandler;
+import com.socket.core.ClientHandler;
 import com.socket.core.MsgpackDecoder;
 import com.socket.core.MsgpackEncoder;
 import com.socket.dispatcher.config.RegistSerializerMessage;
-import com.socket.heartbeat.HeartBeatTimerHandler;
 import com.socket.heartbeat.IMIdleStateHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -38,6 +37,7 @@ public class Start {
             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
             applicationContext.start();
             SpringContext.getCommonExecutorService().init();
+            SpringContext.getScenceService().init();
             connect("127.0.0.1", 8889);
         }
 
@@ -65,14 +65,14 @@ public class Start {
                                  * LengthFieldBasedFrameDecoder：长度域解码器——放在MsgpackDecoder解码器前面
                                  * 关于 长度域编解码器处理半包消息，本文不做详细讲解，会有专门篇章进行说明
                                  */
-
+                                ch.pipeline().addLast(new IMIdleStateHandler());
                                 ch.pipeline().addLast("frameEncoder", new LengthFieldPrepender(2));
                                 ch.pipeline().addLast("MessagePack encoder", new MsgpackEncoder());
                                 ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                                 ch.pipeline().addLast("MessagePack Decoder", new MsgpackDecoder());
-                                ch.pipeline().addLast(new EchoClientHandler());
-                                ch.pipeline().addLast(new HeartBeatTimerHandler());
-                                /*ch.pipeline().addLast(new IMIdleStateHandler());*/
+                                ch.pipeline().addLast(new ClientHandler());
+                                /*ch.pipeline().addLast(new HeartBeatTimerHandler());*/
+
                             }
                         });
 

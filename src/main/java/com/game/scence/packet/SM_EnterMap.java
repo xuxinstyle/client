@@ -1,5 +1,7 @@
 package com.game.scence.packet;
 
+import com.game.scence.model.PlayerPosition;
+
 /**
  * @Author：xuxin
  * @Date: 2019/6/5 17:06
@@ -9,26 +11,13 @@ public class SM_EnterMap {
     private int status;
     /** mapId*/
     private int mapId;
-    /**
-     * 地图内容
-     */
-    private String context;
+
     /**
      * 账号Id
      */
-    private String position;
     private String accountId;
 
-    private int x;
-    private int y;
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
+    private PlayerPosition position;
 
     public String getAccountId() {
         return accountId;
@@ -38,29 +27,14 @@ public class SM_EnterMap {
         this.accountId = accountId;
     }
 
-    public int getX() {
-        return x;
+    public PlayerPosition getPosition() {
+        return position;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setPosition(PlayerPosition position) {
+        this.position = position;
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
-    }
     public int getMapId() {
         return mapId;
     }
@@ -68,6 +42,7 @@ public class SM_EnterMap {
     public void setMapId(int mapId) {
         this.mapId = mapId;
     }
+
     public int getStatus() {
         return status;
     }

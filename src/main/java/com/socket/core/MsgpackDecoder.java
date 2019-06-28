@@ -1,5 +1,7 @@
 package com.socket.core;
 
+import com.socket.Utils.JsonUtils.JsonUtils;
+import com.socket.Utils.ProtoStuffUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
@@ -25,8 +27,8 @@ public class MsgpackDecoder extends MessageToMessageDecoder<ByteBuf> {
         int length = byteBuf.readableBytes();
         byte[] array = new byte[length];
         byteBuf.getBytes(byteBuf.readerIndex(), array, 0, length);
-        MessagePack messagePack = new MessagePack();
-        MyPack myPack = messagePack.read(array, MyPack.class);
+        MyPack myPack = ProtoStuffUtil.deserializer(array, MyPack.class);
+
         list.add(myPack);
     }
 }

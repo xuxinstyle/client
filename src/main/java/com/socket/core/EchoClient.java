@@ -58,7 +58,7 @@ public class EchoClient {
                                 ch.pipeline().addLast("CMessagePack encoder", new MsgpackEncoder());
                                 ch.pipeline().addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                                 ch.pipeline().addLast("CMessagePack Decoder", new MsgpackDecoder());
-                                ch.pipeline().addLast(new EchoClientHandler());
+                                ch.pipeline().addLast(new ClientHandler());
                             }
                         });
 

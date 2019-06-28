@@ -1,10 +1,12 @@
 package com.socket.core;
 
+import com.game.Start;
 import com.game.connect.packet.CM_Connect;
+import com.game.register.packet.CM_Register;
 import com.socket.Utils.JsonUtils.JsonUtils;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
-import com.socket.heartbeat.HeartBeatRequestPack;
+import com.socket.heartbeat.HeartBeatPack;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -13,12 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
-public class EchoClientHandler extends ChannelInboundHandlerAdapter {
+public class ClientHandler extends ChannelInboundHandlerAdapter {
     /**
      * 因为 Netty 采用线程池，所以这里使用原子操作类来进行计数
      */
-    private static final int HEARTBEAT_INTERVAL = 15;
-    Logger logger = LoggerFactory.getLogger(EchoClientHandler.class);
+    private static final int HEARTBEAT_INTERVAL = 30;
+    Logger logger = LoggerFactory.getLogger(ClientHandler.class);
 
     /**
      * 因为多线程，所以使用原子操作类来进行计数
@@ -41,14 +43,12 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         scheduleSendHeartBeat(ctx);
     }
     private void scheduleSendHeartBeat(ChannelHandlerContext ctx) {
-        ctx.executor().schedule(()->{
+        ctx.executor().scheduleAtFixedRate(()->{
             if(ctx.channel().isActive()){
-
-                HeartBeatRequestPack heartBeatRequestPack = new HeartBeatRequestPack();
                 TSession session = SessionUtil.getChannelSession(ctx.channel());
-                session.sendPacket(heartBeatRequestPack);
+                session.sendPacket(new HeartBeatPack());
             }
-        },HEARTBEAT_INTERVAL,TimeUnit.SECONDS);
+        },HEARTBEAT_INTERVAL,HEARTBEAT_INTERVAL,TimeUnit.SECONDS);
     }
 
 
@@ -73,24 +73,13 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //服务端消息传来的地方，在这个地方处理服务端传来的消息，并处理相关逻辑
+        TSession session = SessionUtil.getChannelSession(ctx.channel());
         MyPack packet = (MyPack) msg;
-        /*List<Object> objects =(List<Object>)msg;
-        if(objects.size()<=0){
-            logger.error("错了错了，传来的包为空！");
+        if(packet==null||packet.getpId()==0||packet.getPacket()==null){
             return;
         }
-        String object0 = objects.get(0).toString();
-        int opIndex = Integer.parseInt(object0);
-        Object packet = objects.get(1);
-        TSession session = SessionUtil.getChannelSession(ctx.channel());
-
-        byte[] unpack = MessagePack.unpack(MessagePack.pack(packet), byte[].class);*/
-        TSession session = SessionUtil.getChannelSession(ctx.channel());
-        Class<?> aClass = RegistSerializerMessage.idClassMap.get(packet.getpId());
-        Object pack = JsonUtils.bytes2Object(packet.getPacket(), aClass);
-        // Object pack = ProtoStuffUtil.deserializer(packet.getPacket(), aClass);
         //分发处理
-        actionDispatcher.handle(session,packet.getpId(),pack,System.nanoTime());
+        actionDispatcher.handle(session,packet.getpId(),packet.getPacket(),System.nanoTime());
     }
 
     /**
@@ -107,5 +96,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("断开连接");
         super.channelInactive(ctx);
+        //Start.main(null);
     }
 }

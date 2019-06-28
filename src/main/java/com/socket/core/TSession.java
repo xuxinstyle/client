@@ -1,14 +1,12 @@
 package com.socket.core;
 
 import com.socket.Utils.JsonUtils.JsonUtils;
-import com.socket.Utils.ProtoStuffUtil;
 import com.socket.dispatcher.action.IActionDispatcher;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.channel.Channel;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -56,21 +54,21 @@ public class TSession {
 
     public void sendPacket(Object res) {
         try{
+            if(res==null){
+                MyPack pack = new MyPack();
+                channel.writeAndFlush(pack);
+                return;
+            }
             int opIndex = 0;
-            for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.idClassMap.entrySet()) {
+            for (Map.Entry<Integer, Class<?>> entry :RegistSerializerMessage.ID_CLASS_MAP.entrySet()) {
                 if(entry.getValue().equals(res.getClass())){
                     opIndex = entry.getKey();
+                    break;
                 }
-            }
-            if(opIndex <=0){
-
-                return;
             }
             MyPack pack = new MyPack();
             pack.setpId(opIndex);
             pack.setPacket(JsonUtils.object2Bytes(res));
-            //pack.setPacket(ProtoStuffUtil.serializer(res));
-
             channel.writeAndFlush(pack);
         }catch (Exception e){
             String msg = String.format("encode %s error.",res != null ? res.getClass().getSimpleName():"null");

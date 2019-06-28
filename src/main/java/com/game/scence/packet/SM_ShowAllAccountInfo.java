@@ -1,6 +1,8 @@
 package com.game.scence.packet;
 
-import java.util.Map;
+import com.game.scence.packet.bean.PlayerVO;
+
+import java.util.List;
 
 /**
  * 响应查看场景中的玩家
@@ -8,16 +10,13 @@ import java.util.Map;
  * @Date: 2019/6/6 10:02
  */
 public class SM_ShowAllAccountInfo {
-    /**
-     * <账号Id，昵称>
-     */
-    private String context;
+    private List<PlayerVO> playerVOList;
 
-    public String getContext() {
-        return context;
+    public List<PlayerVO> getPlayerVOList() {
+        return playerVOList;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setPlayerVOList(List<PlayerVO> playerVOList) {
+        this.playerVOList = playerVOList;
     }
 }

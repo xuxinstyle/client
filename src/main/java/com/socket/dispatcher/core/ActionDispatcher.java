@@ -3,9 +3,11 @@ package com.socket.dispatcher.core;
 import com.game.SpringContext;
 import com.game.base.executor.common.command.PlayerUpLevelCommand;
 import com.game.role.player.packet.SM_PlayerUpLevel;
+import com.socket.Utils.JsonUtils.JsonUtils;
 import com.socket.core.TSession;
 import com.socket.dispatcher.action.ActionDispatcherAdapter;
 import com.socket.dispatcher.anno.HandlerAnno;
+import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.executor.IIdentifyThreadPool;
 import com.socket.dispatcher.executor.IdentifyThreadPoolExecutor;
 import org.apache.log4j.Logger;
@@ -34,15 +36,19 @@ public class ActionDispatcher extends ActionDispatcherAdapter implements BeanPos
 
     @Override
     public void handle(TSession session, int opIndex, Object packet, long decodeTime) {
-        //doHandle(session, opIndex, packet);
-        if(packet instanceof SM_PlayerUpLevel){
+        Class<?> aClass = RegistSerializerMessage.ID_CLASS_MAP.get(opIndex);
+        if(aClass==null){
+            return;
+        }
+        Object pack = JsonUtils.bytes2Object((byte[]) packet, aClass);
+        if(pack instanceof SM_PlayerUpLevel){
             PlayerUpLevelCommand command = new PlayerUpLevelCommand();
             command.setSession(session);
             command.setOpIndex(opIndex);
-            command.setPack(packet);
+            command.setPack(pack);
             SpringContext.getCommonExecutorService().submit(command);
         }else {
-            executor.addSessionTask(session, new IoHandleEvent(this, session, opIndex, packet, decodeTime));
+            executor.addSessionTask(session, new IoHandleEvent(this, session, opIndex, pack, decodeTime));
         }
     }
     public static void doHandle(TSession session, int opIndex, Object packet) {

@@ -11,3 +11,4 @@ client.iml
 .idea/.idea/workspace.xml
 .idea/
 target/
+logs/console.log
