@@ -6,11 +6,13 @@ import com.game.connect.service.IConnectService;
 import com.game.login.service.ILoginService;
 import com.game.register.service.RegisterService;
 import com.game.role.player.service.PlayerService;
-import com.game.scence.service.ScenceService;
-import com.game.user.equip.service.EquipService;
-import com.game.user.equipupgrade.service.EquipUpgradeService;
+import com.game.role.skill.service.SkillService;
+import com.game.scence.field.service.FieldService;
+import com.game.scence.visible.service.ScenceService;
+import com.game.role.equip.service.EquipService;
+import com.game.role.equipupgrade.service.EquipUpgradeService;
 import com.game.user.item.service.ItemService;
-import com.game.user.strenequip.service.StrenEquipService;
+import com.game.role.strenequip.service.StrenEquipService;
 import com.resource.core.StorageManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,23 @@ public class SpringContext implements ApplicationContextAware {
     private StrenEquipService strenEquipService;
     @Autowired
     private EquipUpgradeService equipUpgradeService;
+    @Autowired
+    private StorageManager storageManager;
+    @Autowired
+    private FieldService fieldService;
+    @Autowired
+    private SkillService skillService;
+
+    public static SkillService getSkillService(){
+        return instance.skillService;
+    }
+    public static FieldService getFieldService(){
+        return instance.fieldService;
+    }
+
+    public static StorageManager getStorageManager(){
+        return instance.storageManager;
+    }
 
     public static EquipUpgradeService getEquipUpgradeService(){
         return instance.equipUpgradeService;

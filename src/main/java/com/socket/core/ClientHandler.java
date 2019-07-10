@@ -1,10 +1,6 @@
 package com.socket.core;
 
-import com.game.Start;
 import com.game.connect.packet.CM_Connect;
-import com.game.register.packet.CM_Register;
-import com.socket.Utils.JsonUtils.JsonUtils;
-import com.socket.dispatcher.config.RegistSerializerMessage;
 import com.socket.dispatcher.core.ActionDispatcher;
 import com.socket.heartbeat.HeartBeatPack;
 import io.netty.channel.ChannelHandlerContext;
@@ -75,7 +71,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         //服务端消息传来的地方，在这个地方处理服务端传来的消息，并处理相关逻辑
         TSession session = SessionUtil.getChannelSession(ctx.channel());
         MyPack packet = (MyPack) msg;
-        if(packet==null||packet.getpId()==0||packet.getPacket()==null){
+        if(packet.getpId()==-1){
             return;
         }
         //分发处理
@@ -88,7 +84,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         /**释放资源*/
-        cause.printStackTrace();
+        //cause.printStackTrace();
         ctx.close();
     }
 

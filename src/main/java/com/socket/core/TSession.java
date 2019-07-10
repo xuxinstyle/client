@@ -1,6 +1,6 @@
 package com.socket.core;
 
-import com.socket.Utils.JsonUtils.JsonUtils;
+import com.game.util.JsonUtils;
 import com.socket.dispatcher.action.IActionDispatcher;
 import com.socket.dispatcher.config.RegistSerializerMessage;
 import io.netty.channel.Channel;
@@ -25,7 +25,14 @@ public class TSession {
     private final String ip;
     private String inetIp;
     private final String port;
-    private int mapId=0;
+    /**
+     * 地图id
+     */
+    private int mapId;
+    /**
+     * 场景id
+     */
+    private int sceneId;
     private final IActionDispatcher actionDispatcher;
     public TSession(Channel channel){
         this(channel, null);
@@ -110,5 +117,13 @@ public class TSession {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
+    }
+
+    public int getSceneId() {
+        return sceneId;
+    }
+
+    public void setSceneId(int sceneId) {
+        this.sceneId = sceneId;
     }
 }

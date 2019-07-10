@@ -20,7 +20,7 @@ public class LoginFacade {
     @HandlerAnno
     public void doLoginAfter(TSession session, SM_Login res){
         try {
-            SpringContext.getLoginService().doLoginAfter(session, res.getStatus(), res.getAccountId(), res.getLastScenceId());
+            SpringContext.getLoginService().doLoginAfter(session, res.getStatus(), res.getAccountId(), res.getLastScenceId(),res.getPlayerId());
         }catch (Exception e){
             logger.error("登录后出错"+e.toString());
             e.printStackTrace();

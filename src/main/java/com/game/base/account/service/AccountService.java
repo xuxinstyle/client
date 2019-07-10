@@ -20,5 +20,5 @@ public interface AccountService {
      * @param accountId
      * @param status
      */
-    void doCreatePlayerAfter(TSession session, String accountId, int status);
+    void doCreatePlayerAfter(TSession session, String accountId, int status,long playerId);
 }

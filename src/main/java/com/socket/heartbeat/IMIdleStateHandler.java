@@ -19,11 +19,21 @@ public class IMIdleStateHandler extends IdleStateHandler {
     public IMIdleStateHandler() {
         super(0, 0,ALL_IDLE_TIME,TimeUnit.SECONDS);
     }
-
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        super.userEventTriggered(ctx, evt);
+        if(evt instanceof IdleStateEvent){
+            IdleStateEvent e = (IdleStateEvent) evt;
+            if(e.state() == IdleState.ALL_IDLE){
+                logger.info("连接超时.....");
+                ctx.channel().close();
+            }
+        }
+    }
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
-        logger.info(ALL_IDLE_TIME +"秒内未读写数据关闭连接");
-        if(evt.state() == IdleState.ALL_IDLE){
+        logger.info(ALL_IDLE_TIME +"秒内未读数据关闭连接");
+        if(evt.state() == IdleState.READER_IDLE){
             logger.info("连接超时.....");
             ctx.channel().close();
         }

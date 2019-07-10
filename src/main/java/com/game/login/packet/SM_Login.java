@@ -17,6 +17,10 @@ public class SM_Login {
      */
     private String accountId;
     /**
+     * 玩家角色id
+     */
+    private long playerId;
+    /**
      * 玩家上次登出时所在的场景Id
      */
     private int lastScenceId;
@@ -28,6 +32,7 @@ public class SM_Login {
     public void setLastScenceId(int lastScenceId) {
         this.lastScenceId = lastScenceId;
     }
+
     public String getAccountId() {
         return accountId;
     }
@@ -42,5 +47,13 @@ public class SM_Login {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(long playerId) {
+        this.playerId = playerId;
     }
 }

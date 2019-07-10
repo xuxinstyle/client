@@ -1,11 +1,9 @@
 package com.game.user.item.service;
 
-import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
-import com.game.base.attribute.constant.AttributeType;
 import com.game.role.constant.Job;
-import com.game.user.equip.constant.EquipQuality;
-import com.game.user.equip.constant.EquipType;
+import com.game.role.equip.constant.EquipQuality;
+import com.game.role.equip.constant.EquipType;
 import com.game.user.item.constant.ItemType;
 import com.game.user.item.packet.SM_ShowItemInfo;
 import com.game.user.item.packet.bean.ItemVO;
@@ -32,23 +30,22 @@ public class ItemServiceImpl implements ItemService {
 
             System.out.println(stringBuffer.toString());
         }
-        SpringContext.getScenceService().doOperate(session, session.getMapId());
     }
 
     @Override
     public void AwardToPack(TSession session, int status) {
         if(status == 1){
-            System.out.println("添加成功");
-            SpringContext.getScenceService().doOperate(session, session.getMapId());
+            System.out.println("发奖成功");
+
         }else if(status ==2 ){
-            System.out.println("添加失败");
-            SpringContext.getScenceService().doOperate(session, session.getMapId());
+            System.out.println("发奖失败");
+
         }else if(status == 3){
             System.out.println("背包已满");
-            SpringContext.getScenceService().doOperate(session, session.getMapId());
+
         }else{
             System.out.println("未知错误");
-            SpringContext.getScenceService().doOperate(session,session.getMapId());
+
         }
     }
 
@@ -56,16 +53,12 @@ public class ItemServiceImpl implements ItemService {
     public void useItem(TSession session, int status, long effectiveTime) {
         if(status==1){
             System.out.println("使用成功，有效时间增加["+effectiveTime/(1000*60)+"]分钟");
-            SpringContext.getScenceService().doOperate(session,session.getMapId());
         }else if(status == 2){
             System.out.println("你没有该道具，无法使用");
-            SpringContext.getScenceService().doOperate(session,session.getMapId());
         }else if(status == 3){
             System.out.println("道具不能使用！");
-            SpringContext.getScenceService().doOperate(session,session.getMapId());
         }else {
             System.out.println("未知错误！");
-            SpringContext.getScenceService().doOperate(session,session.getMapId());
         }
     }
 
@@ -89,20 +82,23 @@ public class ItemServiceImpl implements ItemService {
             System.out.println("[基础属性]：");
             List<Attribute> baseAttributeList = sm.getBaseAttributeList();
             for (Attribute attribute : baseAttributeList){
-                System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
+                if(attribute==null){
+                    continue;
+                }
+                System.out.println(attribute.getType().getAttrName()+"："+attribute.getValue());
             }
 
             List<Attribute> strenAttributeList = sm.getStrenAttributeList();
             if(strenAttributeList!=null&&!strenAttributeList.isEmpty()){
                 System.out.println("[强化属性]：");
                 for (Attribute attribute : strenAttributeList){
-                    System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
+                    System.out.println(attribute.getType().getAttrName()+"："+attribute.getValue());
                 }
             }
         }else if(sm.getItemType() == ItemType.CONSUME_STONE.getId()){
             System.out.println("用于提升装备品质装备强化或升级的宝石");
         }else{
-            System.out.println("用于提升装备品质装备强化或升级的宝石");
+            System.out.println("使用后可提升玩家属性指定的时间");
         }
 
     }

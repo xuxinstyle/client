@@ -33,7 +33,7 @@ public class AccountFacade {
     @HandlerAnno
     public void createPlayerAfter(TSession session, SM_CreatePlayer res){
         try {
-            SpringContext.getAccountService().doCreatePlayerAfter(session, res.getAccountId(), res.getStatus());
+            SpringContext.getAccountService().doCreatePlayerAfter(session, res.getAccountId(), res.getStatus(),res.getPlayerId());
         }catch (Exception e){
             logger.error("进入创建角色页面失败"+e.toString());
         }

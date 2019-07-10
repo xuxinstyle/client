@@ -14,7 +14,7 @@ public interface ILoginService {
     /**
      * 登录后做的事情
      */
-    void doLoginAfter(TSession session, int status, String accountId, int mapId);
+    void doLoginAfter(TSession session, int status, String accountId, int mapId, long playerId);
 
     /**
      * 登出

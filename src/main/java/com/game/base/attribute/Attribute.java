@@ -11,7 +11,7 @@ public class Attribute {
     /**
      * 属性类型
      */
-    private AttributeType attributeType;
+    private AttributeType type;
     /**
      * 属性值
      */
@@ -20,7 +20,7 @@ public class Attribute {
 
     public static Attribute valueOf(AttributeType type , long value){
         Attribute attribute = new Attribute();
-        attribute.setAttributeType(type);
+        attribute.setType(type);
         attribute.setValue(value);
         return attribute;
     }
@@ -35,12 +35,12 @@ public class Attribute {
     public void addValue(long value){
         value+=value;
     }
-    public AttributeType getAttributeType() {
-        return attributeType;
+    public AttributeType getType() {
+        return type;
     }
 
-    public void setAttributeType(AttributeType attributeType) {
-        this.attributeType = attributeType;
+    public void setType(AttributeType type) {
+        this.type = type;
     }
 
     public long getValue() {

@@ -1,6 +1,5 @@
 package com.game.role.player.service;
 
-import com.game.SpringContext;
 import com.game.base.attribute.Attribute;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
@@ -32,18 +31,17 @@ public class PlayerServiceImpl implements PlayerService {
 
         System.out.println("-----------基础属性：-----------");
         for (Attribute attribute:secondAttribute){
-            System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
+            System.out.println(attribute.getType().getAttrName()+"："+attribute.getValue());
         }
         System.out.println("-----------一级属性：-----------");
         for (Attribute attribute:firstAttribute){
-            System.out.println(attribute.getAttributeType().getAttrName()+"："+attribute.getValue());
+            System.out.println(attribute.getType().getAttrName()+"："+attribute.getValue());
         }
-        if(otherAttributeList!=null) {
+        if(otherAttributeList!=null&&otherAttributeList.size()!=0) {
             System.out.println("-----------其他属性:------------");
             for (Attribute attribute : otherAttributeList) {
-                System.out.println(attribute.getAttributeType().getAttrName() + "：" + attribute.getValue());
+                System.out.println(attribute.getType().getAttrName() + "：" + attribute.getValue());
             }
         }
-        SpringContext.getScenceService().doOperate(session,session.getMapId());
     }
 }

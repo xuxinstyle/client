@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <protocols>
 
-
+    <catalog id="-1" value="com.socket.heartbeat.HeartBeatPack"/>
     <catalog id="1" value="com.game.login.packet.CM_Login"/>
     <catalog id="2" value="com.game.connect.packet.CM_Connect"/>
     <catalog id="3" value="com.game.login.packet.SM_Login"/>
@@ -19,18 +19,18 @@
     <catalog id="12" value="com.game.login.packet.SM_Logout"/>
     <catalog id="13" value="com.game.login.packet.SM_LoginNoAcount"/>
 
-    <catalog id="14" value="com.game.scence.packet.CM_EnterMap"/>
-    <catalog id="15" value="com.game.scence.packet.SM_EnterMap"/>
+    <catalog id="14" value="com.game.scence.visible.packet.CM_EnterMap"/>
+    <catalog id="15" value="com.game.scence.visible.packet.SM_EnterMap"/>
 
-    <catalog id="16" value="com.game.scence.packet.CM_ShowAllAccountInfo"/>
-    <catalog id="17" value="com.game.scence.packet.SM_ShowAllAccountInfo"/>
-    <catalog id="18" value="com.game.scence.packet.CM_ShowAccountInfo"/>
-    <catalog id="19" value="com.game.scence.packet.SM_ShowAccountInfo"/>
-    <catalog id="20" value="com.game.scence.packet.CM_Move"/>
-    <catalog id="21" value="com.game.scence.packet.SM_Move"/>
+    <catalog id="16" value="com.game.scence.visible.packet.CM_ShowAllVisibleInfo"/>
+    <catalog id="17" value="com.game.scence.visible.packet.SM_ShowAllVisibleInfo"/>
+    <catalog id="18" value="com.game.scence.visible.packet.CM_ShowAccountInfo"/>
+    <catalog id="19" value="com.game.scence.visible.packet.SM_ShowAccountInfo"/>
+    <catalog id="20" value="com.game.scence.visible.packet.CM_Move"/>
+    <catalog id="21" value="com.game.scence.visible.packet.SM_Move"/>
 
-    <catalog id="22" value="com.game.scence.packet.CM_OnlinePlayerOperate"/>
-    <catalog id="23" value="com.game.scence.packet.SM_OnlinePlayerOperate"/>
+    <catalog id="22" value="com.game.scence.visible.packet.CM_ScenePositionVisible"/>
+    <catalog id="23" value="com.game.scence.visible.packet.SM_ScenePositionVisible"/>
 
 
     <catalog id="24" value="com.game.user.item.packet.SM_RemoveItemFormPack"/>
@@ -42,21 +42,21 @@
     <catalog id="30" value="com.game.user.item.packet.bean.ItemVO"/>
     <catalog id ="31" value="com.game.role.player.packet.SM_PlayerUpLevel"/>
 
-    <catalog id="32" value="com.game.user.equip.packet.CM_Equip"/>
-    <catalog id="33" value="com.game.user.equip.packet.SM_Equip"/>
-    <catalog id="34" value="com.game.user.equip.packet.CM_UnEquip"/>
-    <catalog id="35" value="com.game.user.equip.packet.SM_UnEquip"/>
-    <catalog id="36" value="com.game.user.equip.packet.CM_ShowEquipInfo"/>
-    <catalog id="37" value="com.game.user.equip.packet.SM_ShowEquipInfo"/>
-    <catalog id="38" value="com.game.user.equip.packet.bean.EquipmentVO"/>
+    <catalog id="32" value="com.game.role.equip.packet.CM_Equip"/>
+    <catalog id="33" value="com.game.role.equip.packet.SM_Equip"/>
+    <catalog id="34" value="com.game.role.equip.packet.CM_UnEquip"/>
+    <catalog id="35" value="com.game.role.equip.packet.SM_UnEquip"/>
+    <catalog id="36" value="com.game.role.equip.packet.CM_ShowEquipInfo"/>
+    <catalog id="37" value="com.game.role.equip.packet.SM_ShowEquipInfo"/>
+    <catalog id="38" value="com.game.role.equip.packet.bean.EquipmentVO"/>
 
     <catalog id="39" value="com.game.role.player.packet.CM_ShowAttribute"/>
     <catalog id="40" value="com.game.role.player.packet.SM_ShowAttribute"/>
 
-    <catalog id="41" value="com.game.user.strenequip.packet.CM_StrenEquip"/>
-    <catalog id="42" value="com.game.user.strenequip.packet.SM_StrenEquip"/>
-    <catalog id="43" value="com.game.user.equipupgrade.packet.CM_EquipUpgrade"/>
-    <catalog id="44" value="com.game.user.equipupgrade.packet.SM_EquipUpgrade"/>
+    <catalog id="41" value="com.game.role.strenequip.packet.CM_StrenEquip"/>
+    <catalog id="42" value="com.game.role.strenequip.packet.SM_StrenEquip"/>
+    <catalog id="43" value="com.game.role.equipupgrade.packet.CM_EquipUpgrade"/>
+    <catalog id="44" value="com.game.role.equipupgrade.packet.SM_EquipUpgrade"/>
 
     <catalog id="45" value="com.game.user.item.packet.CM_UseItem"/>
     <catalog id="46" value="com.game.user.item.packet.SM_UseItem"/>
@@ -65,4 +65,33 @@
     <catalog id="48" value="com.game.user.item.packet.CM_ShowItemInfo"/>
     <catalog id="49" value="com.game.user.item.packet.SM_ShowItemInfo"/>
 
+    <catalog id="50" value="com.game.gm.packet.CM_GMCommond"/>
+    <catalog id="51" value="com.game.gm.packet.SM_GMCommond"/>
+
+    <catalog id="52" value="com.game.scence.visible.packet.CM_ChangeMap"/>
+    <catalog id="53" value="com.game.scence.visible.packet.SM_ChangeMap"/>
+    <catalog id="54" value="com.game.scence.visible.packet.SM_ChangeMapErr"/>
+    <catalog id="55" value="com.game.scence.visible.packet.SM_EnterMapErr"/>
+
+    <catalog id="56" value="com.game.scence.field.packet.CM_ShowMonsterInfo"/>
+    <catalog id="57" value="com.game.scence.field.packet.SM_ShowMonsterInfo"/>
+
+    <catalog id="58" value="com.game.role.skill.packet.CM_LearnSkill"/>
+    <catalog id="59" value="com.game.role.skill.packet.SM_LearnSkill"/>
+    <catalog id="60" value="com.game.role.skill.packet.SM_UpgradeSkill"/>
+    <catalog id="61" value="com.game.role.skill.packet.CM_UpgradeSkill"/>
+
+    <catalog id="62" value="com.game.role.skill.packet.SM_ShowSkillInfo"/>
+    <catalog id="63" value="com.game.role.skill.packet.CM_ShowSkillInfo"/>
+    <catalog id="64" value="com.game.role.skill.packet.SM_ShowSkillBar"/>
+    <catalog id="65" value="com.game.role.skill.packet.CM_ShowSkillBar"/>
+    <catalog id="66" value="com.game.role.skill.packet.SM_SetSkillBar"/>
+    <catalog id="67" value="com.game.role.skill.packet.CM_SetSkillBar"/>
+
+    <catalog id="68" value="com.game.role.skill.packet.CM_UseSkillToMonster"/>
+    <catalog id="69" value="com.game.role.skill.packet.SM_UseSkillToMonster"/>
+    <catalog id="70" value="com.game.role.skill.packet.SM_UseSkillToMonsterErr"/>
+
+    <catalog id="71" value="com.game.role.skill.packet.SM_CreatureRevive"/>
+    <catalog id="72" value="com.game.role.skill.packet.SM_CreatureDead"/>
 </protocols>

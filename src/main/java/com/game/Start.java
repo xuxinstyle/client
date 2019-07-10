@@ -37,8 +37,10 @@ public class Start {
             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
             applicationContext.start();
             SpringContext.getCommonExecutorService().init();
+            SpringContext.getStorageManager().init();
             SpringContext.getScenceService().init();
-            connect("127.0.0.1", 8889);
+
+            connect("127.0.0.1", 8888);
         }
 
         public void connect(String host, int port) {

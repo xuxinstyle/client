@@ -1,7 +1,7 @@
 package com.game.register.service;
 
 import com.game.register.packet.CM_Register;
-import com.game.utils.MD5Util;
+import com.game.util.MD5Util;
 import com.socket.core.TSession;
 import org.springframework.stereotype.Component;
 

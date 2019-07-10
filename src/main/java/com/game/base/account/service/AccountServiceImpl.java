@@ -39,10 +39,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void doCreatePlayerAfter(TSession session, String accountId, int status) {
+    public void doCreatePlayerAfter(TSession session, String accountId, int status, long playerId) {
         if(status==1){
             System.out.println(accountId+" 恭喜你创建角色成功");
-
+            session.setPlayerId(playerId);
 
         }else if(status == 0){
             SpringContext.getAccountService().enterCreatePlayer(session,accountId);

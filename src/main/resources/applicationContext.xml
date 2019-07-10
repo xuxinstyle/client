@@ -15,7 +15,14 @@
     <context:property-placeholder location="server.properties"/>
     <!-- 自动扫描 -->
     <context:component-scan base-package="com.game,com.socket,com.resource"/>
-
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <!-- 自定义转换器 -->
+                <bean  class="com.resource.support.JsonToArrayConverter" ></bean>
+            </set>
+        </property>
+    </bean>
     <bean id="serverConfigValue" class="com.game.ServerConfigValue">
         <property name="port" value="${server.socket.port}"/>
     </bean>
